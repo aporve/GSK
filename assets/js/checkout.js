@@ -126,7 +126,11 @@ function getAccordianAccountsData(data, rebates) {
         if(rebates) {
             discount = item["discount"];
         } else {
-            discount = filteredBrand["eligible_discount"] ? filteredBrand["eligible_discount"] : "-";
+            if(item["discount"]) {
+                discount = item["discount"]["eligible_discount"] ? `${item["discount"]["eligible_discount"]}%` : "-";
+            } else {
+                discount = filteredBrand["eligible_discount"] ? `${filteredBrand["eligible_discount"]}%` : "-";
+            }
         }
 
         if(rebates || item["quantity"]) {
@@ -145,7 +149,7 @@ function getAccordianAccountsData(data, rebates) {
                 <td class="info_data" colspan="1">£ ${item["price"]}</td>
                 <td class="info_data" colspan="1">${item["quantity"] || item["units"]}</td>
                 <td class="info_data" colspan="1">+${item["free_goods"]}</td>
-                    <td class="info_data" colspan="1">${discount}%</td>
+                    <td class="info_data" colspan="1">${discount}</td>
                 <td class="info_data" colspan="1">${item["payterm"]} D</td>
             </tr>
         `
