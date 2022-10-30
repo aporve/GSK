@@ -8,7 +8,7 @@
 
 (function () {
     setTimeout(() => {
-        window.orderCartData = {};
+        window.orderCartData = [];
         window.updateCartData = {};
         window.cartData = {};
         window.wholesalerAccountData = [];
