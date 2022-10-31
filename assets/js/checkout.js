@@ -119,8 +119,7 @@ function getAccordianAccountsData(data, rebates) {
     let parsedData = getParsedData();
     let brand = parsedData["plan_progress"]["brands"].filter(brand => brand["sku"] === parsedData["selected_brand"]);
     let filteredBrand = brand[0];
-    console.log("filteredBrand --> ", filteredBrand);
-    
+    let eligibleFreeGoods = 0;
     let discount = 0;
     let accordianAccountsData = data.map((item, index) => {
         if(rebates) {
@@ -130,6 +129,9 @@ function getAccordianAccountsData(data, rebates) {
                 discount = item["discount"]["eligible_discount"] ? `${item["discount"]["eligible_discount"]}%` : "-";
             } else {
                 discount = filteredBrand["eligible_discount"] ? `${filteredBrand["eligible_discount"]}%` : "-";
+            }
+            if(item["quantity"]) {
+                eligibleFreeGoods = Number(item["quantity"]) > Number(item["free_goods_range"]["limit"]) ? `+${Number(item["free_goods_range"]["eligible_goods"])}` : '-';
             }
         }
 
@@ -148,7 +150,7 @@ function getAccordianAccountsData(data, rebates) {
             <tr class="info_row borderBottom">
                 <td class="info_data" colspan="1">£ ${item["price"]}</td>
                 <td class="info_data" colspan="1">${item["quantity"] || item["units"]}</td>
-                <td class="info_data" colspan="1">+${item["free_goods"]}</td>
+                    <td class="info_data" colspan="1">${eligibleFreeGoods || +item["free_goods"]}</td>
                     <td class="info_data" colspan="1">${discount}</td>
                 <td class="info_data" colspan="1">${item["payterm"]} D</td>
             </tr>

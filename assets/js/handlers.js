@@ -659,7 +659,7 @@ function addnewOrderBrand(data, currentSku, skulevel) {
 }
 
 function updateCounter(counterInput, type, currentSku, skulevel) {
-    let storeddata = localStorage.getItem("data");
+    let storeddata = (window.dataStore && Object.keys(window.dataStore).length !== 0) ? JSON.stringify(window.dataStore) : localStorage.getItem("data");
     let parseStoredData = JSON.parse(storeddata);
     let siblingWrapper = $(counterInput).parent().siblings(".counter__input");
     if (type === "add") {
