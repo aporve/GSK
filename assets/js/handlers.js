@@ -185,7 +185,7 @@ function showSkuLevelDetailsBrand(data, currentSku) {
             ordr["product_details"].map(product => {
                 let parentSku = window.cartData[ordr["sku"]];
                 let skuproduct = parentSku[product["sku"]];
-                if(window[`shouldNewWholeSalerAccountAdd-${index}`] && skuproduct && (product["brand"] === currentSku)) {
+                if(window[`shouldNewWholeSalerAccountAdd-${index}`] && skuproduct && (product["brand"] === currentSku  && ordr["brandsku"].includes(currentSku))) {
                     addnewOrderBrand(ordr, currentSku, true);
                     window[`shouldNewWholeSalerAccountAdd-${index}`] = false;
                 }
@@ -381,7 +381,7 @@ function showBrandLevelDetails(data, currentSku) {
         ordr["product_details"].map(product => {
             let parentSku = window.cartData[ordr["sku"]];
             let skuproduct = parentSku[product["sku"]];
-            if(window[`shouldNewWholeSalerAccountAdd-${index}`] && skuproduct && (product["brand"] === currentSku)) {
+            if(window[`shouldNewWholeSalerAccountAdd-${index}`] && skuproduct && (product["brand"] === currentSku && ordr["brandsku"].includes(currentSku))) {
                 addnewOrder(ordr, currentSku);
                 window[`shouldNewWholeSalerAccountAdd-${index}`] = false;
             }
@@ -705,11 +705,19 @@ function updateCounter(counterInput, type, currentSku, skulevel) {
             }
         });
 
-        let total = calculateSumAmount({
+        let totalCalculationTemporary = JSON.parse(JSON.stringify({
             [parentSkuData]: {
                 ...window.cartData[parentSkuData]
             }
-        });
+        }));
+
+        for(key in totalCalculationTemporary[parentSkuData]) {
+            if(!key.includes(brand[0]["name"]?.toUpperCase())) {
+                delete totalCalculationTemporary[parentSkuData][key];    
+            }
+        }
+
+        let total = calculateSumAmount(totalCalculationTemporary);
 
         parseStoredData && parseStoredData["plan_progress"] && parseStoredData["plan_progress"]["brands"].map(brandDataItem => {
             if (brandDataItem["sku"] === parseStoredData["selected_brand"]) {
