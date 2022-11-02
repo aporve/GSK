@@ -373,6 +373,6 @@ function loadBrandSelectionUI(data) {
         const filteredBrand = data["plan_progress"]["brands"].filter(brand => brand["sku"] === currentElementSkuData);
         const isBrandSku = filteredBrand[0]["isSku"];
         ToBot("select-brand", parsedData);
-        !isBrandSku ? showSkuLevelDetailsBrand(parsedData, currentElementSkuData) : showBrandLevelDetails(parsedData, currentElementSkuData);
+        isBrandSku ? showSkuLevelDetailsBrand(parsedData, currentElementSkuData) : showBrandLevelDetails(parsedData, currentElementSkuData);
     });
 }
