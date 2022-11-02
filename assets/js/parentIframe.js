@@ -87,6 +87,16 @@ window.addEventListener('message', function (eventData) {
         return;
     }
 
+    if (parsedData?.event_code == 'custom-event' && parsedData?.data?.code == "ordercart-screen") {
+        document.getElementById('ymIframe').contentWindow.postMessage(JSON.stringify({
+            event_code: 'ordercart-screen',
+            data:  parsedData.data.data
+        }), '*');
+        console.log("ordercart-screen")
+        console.log('Event Data-->>',parsedData.data.data)
+        return;
+    }
+
 
 
     // Send events to bot
