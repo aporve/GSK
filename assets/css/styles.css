@@ -525,6 +525,15 @@ table {
     color: #151515;
 }
 
+.choosebrands .menu_header .label .back-arrow {
+    transform: rotate(180deg);
+    display: inline-block;
+    height: 8px;
+    margin-right: 4px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
 .choosebrands .menu_header .icon {
     height: 20px;
     width: 20px;

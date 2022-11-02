@@ -42,8 +42,8 @@ function showSkuLevelDetailsBrand(data, currentSku) {
         $("#previous-orders-accordion").append(`
             <div class="accordion">
                 <div class="accordion-item inverted">
-                    <div class="accordion-item-header account_detail white active">${order["account_no"]}</div>
-                    <div class="accordion-item-body parent opened orderbrandselection">
+                    <div class="accordion-item-header account_detail white">${order["account_no"]}</div>
+                    <div class="accordion-item-body parent orderbrandselection">
                         <div class="accordion-item-body-content" style="max-height: 300px; overflow: auto;">
                             <div class="date-picker-value pointernone">
                                 ${showDatePickerWhite()}
@@ -238,8 +238,8 @@ function showBrandLevelDetails(data, currentSku) {
         $("#previous-orders-accordion").append(`
             <div class="accordion">
                 <div class="accordion-item inverted">
-                    <div class="accordion-item-header account_detail white active">${order["account_no"]}</div>
-                    <div class="accordion-item-body parent opened orderbrandselection">
+                    <div class="accordion-item-header account_detail white">${order["account_no"]}</div>
+                    <div class="accordion-item-body parent orderbrandselection">
                         <div class="accordion-item-body-content" style="max-height: 300px; overflow: auto;">
                             <div class="date-picker-value pointernone">
                                 ${showDatePickerWhite()}
