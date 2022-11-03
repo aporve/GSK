@@ -72,7 +72,7 @@ function CallScreen(caseNum) {
                     "brands": [
                         {
                             "name": "Augmentin",
-                            "isSku": true,
+                            "isSku": false,
                             "additional_discount": true,
                             "purchased": "125",
                             "selected": "0",
@@ -96,7 +96,7 @@ function CallScreen(caseNum) {
                         },
                         {
                             "name": "Ventolin",
-                            "isSku": true,
+                            "isSku": false,
                             "additional_discount": true,
                             "purchased": "45",
                             "selected": "0",
@@ -126,7 +126,7 @@ function CallScreen(caseNum) {
                         },
                         {
                             "name": "Seretide",
-                            "isSku": true,
+                            "isSku": false,
                             "additional_discount": false,
                             "purchased": "75",
                             "selected": "0",

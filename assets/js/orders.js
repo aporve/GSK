@@ -362,6 +362,9 @@ function loadBrandSelectionUI(data) {
         e.stopImmediatePropagation();
         const currentElementSkuData = $(this).attr("skudata");
         const parsedData = getParsedData();
+        if(window.dataStore && Object.keys(window.dataStore).length !== 0) {
+            window.dataStore["selected_brand"] = currentElementSkuData;
+        }
         parsedData["selected_brand"] = currentElementSkuData;
         saveParsedData(parsedData);
         // let parsedCurrentElementData = JSON.parse(decodeURIComponent(currentElementData));

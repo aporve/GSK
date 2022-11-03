@@ -513,11 +513,11 @@ function addnewOrder(data, currentSku) {
         }
         
         $(`.counter__minus.key${uuid}`).click(function (e) {
-            updateCounter(this, "minus", currentSku);
+            updateCounter(this, "minus", currentSku, false, data);
         });
 
         $(`.counter__plus.key${uuid}`).click(function (e) {
-            updateCounter(this, "add", currentSku);
+            updateCounter(this, "add", currentSku, false, data);
         });
     });
 
@@ -626,11 +626,11 @@ function addnewOrderBrand(data, currentSku, skulevel) {
         `);
 
         $(`.counter__minus.key${uuid}`).click(function (e) {
-            updateCounter(this, "minus", currentSku, skulevel);
+            updateCounter(this, "minus", currentSku, skulevel, data);
         });
 
         $(`.counter__plus.key${uuid}`).click(function (e) {
-            updateCounter(this, "add", currentSku, skulevel);
+            updateCounter(this, "add", currentSku, skulevel, data);
             // let parsedata = getParsedData();
             // let filteredBrand = parsedata["plan_progress"]["brands"].filter(brand => brand["sku"] === parsedata["selected_brand"]);
             // let progressCards = loadProgressCards({ "brands": filteredBrand }, true, true)
@@ -658,8 +658,8 @@ function addnewOrderBrand(data, currentSku, skulevel) {
     $('input[id$=tbDate]').datepicker("setDate", "today");
 }
 
-function updateCounter(counterInput, type, currentSku, skulevel) {
-    let storeddata = (window.dataStore && Object.keys(window.dataStore).length !== 0) ? JSON.stringify(window.dataStore) : localStorage.getItem("data");
+function updateCounter(counterInput, type, currentSku, skulevel, brandData) {
+    let storeddata = localStorage.getItem("data");
     let parseStoredData = JSON.parse(storeddata);
     let siblingWrapper = $(counterInput).parent().siblings(".counter__input");
     if (type === "add") {
@@ -673,7 +673,8 @@ function updateCounter(counterInput, type, currentSku, skulevel) {
         let parentSkuData = $(counterInput).parent().parent().attr("parentskudata");
 
         let brand = parseStoredData["plan_progress"]["brands"].filter(brand => brand["sku"] === currentSku);
-        
+        let filteredProductDetails = brandData["product_details"].filter(data => data["sku"] === skuData);
+
         window.cartData = {
             ...window.cartData,
             [parentSkuData]: {
@@ -712,7 +713,7 @@ function updateCounter(counterInput, type, currentSku, skulevel) {
         }));
 
         for(key in totalCalculationTemporary[parentSkuData]) {
-            if(!key.includes(brand[0]["name"]?.toUpperCase())) {
+            if(brand[0]["sku"] !== filteredProductDetails[0]["brand"]) {
                 delete totalCalculationTemporary[parentSkuData][key];    
             }
         }
@@ -756,6 +757,10 @@ function updateCounter(counterInput, type, currentSku, skulevel) {
                 $input.change();
                 $input.attr("previous-value", $input.val());
             }
+
+            let brand = parseStoredData["plan_progress"]["brands"].filter(brand => brand["sku"] === currentSku);
+            let filteredProductDetails = brandData["product_details"].filter(data => data["sku"] === skuData);
+
             window.cartData = {
                 ...window.cartData,
                 [parentSkuData]: {
@@ -788,11 +793,19 @@ function updateCounter(counterInput, type, currentSku, skulevel) {
                 }
             });
 
-            let total = calculateSumAmount({
+            let totalCalculationTemporary = JSON.parse(JSON.stringify({
                 [parentSkuData]: {
                     ...window.cartData[parentSkuData]
                 }
-            });
+            }));
+    
+            for(key in totalCalculationTemporary[parentSkuData]) {
+                if(brand[0]["sku"] !== filteredProductDetails[0]["brand"]) {
+                    delete totalCalculationTemporary[parentSkuData][key];    
+                }
+            }
+    
+            let total = calculateSumAmount(totalCalculationTemporary);
     
             parseStoredData && parseStoredData["plan_progress"] && parseStoredData["plan_progress"]["brands"].map(brandDataItem => {
                 if (brandDataItem["sku"] === parseStoredData["selected_brand"]) {
