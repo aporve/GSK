@@ -295,6 +295,21 @@ function loadUserWelcomeUI(data) {
             }
         })
     })
+    } else {
+        $("#last_order_history").append(`<div class="progress_plan" id="progress_plan_main"></div>`);
+    }
+
+    $(".place_new_order").click(function (e) {
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        let data = localStorage.getItem("data");
+        let parsedData = JSON.parse(data);
+        // let currentElementData = $(this).parent().attr("data");
+        // let parsedCurrentElementData = JSON.parse(decodeURIComponent(currentElementData));
+        ToApp("choosebrands-screen", parsedData);
+        ToBot("place-new-order", {});
+    });
+    
 }
 
 function loadBrandSelectionUI(data) {
