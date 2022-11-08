@@ -24,7 +24,7 @@ function GlobalVarInit() {
 }
 
 function StoreDataIn(data) {
-    // localStorage.setItem("data", JSON.stringify(data));
+    localStorage.setItem("data", JSON.stringify(data));
     localStorage.setItem("init", JSON.stringify(data));
 }
 
