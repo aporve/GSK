@@ -517,12 +517,18 @@ table {
     padding: 0 16px;
 }
 
-.choosebrands .menu_header .label {
+.choosebrands .menu_header .label,
+.choosebrands .category_label {
     font-weight: 600;
     font-size: 12px;
     line-height: 26px;
     text-transform: uppercase;
     color: #151515;
+}
+
+.choosebrands .category_label {
+    margin-bottom: -0.5rem;
+    font-weight: 700;
 }
 
 .choosebrands .menu_header .label .back-arrow {
@@ -937,7 +943,8 @@ table {
     vertical-align: top;
 }
 
-.account_select {
+.account_select,
+.periodrebates {
     position: fixed;
     top: 0;
     left: 0;
@@ -953,7 +960,8 @@ table {
     z-index: 9;
 }
 
-.account_select .account_list {
+.account_select .account_list,
+.periodrebates .rebates_list {
     height: auto;
     background: #fff;
     width: 100%;
@@ -964,7 +972,8 @@ table {
     overflow-y: auto;
 }
 
-.account_select .account_list .item {
+.account_select .account_list .item,
+.periodrebates .rebates_list  .item {
     font-weight: 600;
     font-size: 14px;
     line-height: 20px;
@@ -973,17 +982,20 @@ table {
     padding: 6px;
 }
 
-.account_select .account_list .item:hover {
+.account_select .account_list .item:hover,
+.periodrebates .rebates_list .item:hover {
     background: #0f0f0f7e;
     color: #fff;
     cursor: pointer;
     border-radius: 6px;
 }
 
-.account_select .account_list .item:first-child {
+.account_select .account_list .item:first-child,
+.periodrebates .rebates_list .item:first-child {
     margin-top: 0;
 }
-.account_select .account_list .item:last-child {
+.account_select .account_list .item:last-child,
+.periodrebates .rebates_list .item:last-child {
     margin-bottom: 0;
 }
 

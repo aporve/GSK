@@ -137,9 +137,6 @@ function showSkuLevelDetailsBrand(data, currentSku) {
         $(".account_select").removeClass("hide");
     });
 
-    $('input[id$=tbDate]').datepicker({ dateFormat: 'M dd, y', minDate: 0 });
-    $('input[id$=tbDate]').datepicker("setDate", "today");
-
     $(".accordion-item-header.account_detail").click(function (e) {
         e.stopPropagation();
         e.stopImmediatePropagation();
@@ -319,9 +316,6 @@ function showBrandLevelDetails(data, currentSku) {
         $(".account_select").removeClass("hide");
     });
 
-    $('input[id$=tbDate]').datepicker({ dateFormat: 'M dd, y', minDate: 0 });
-    $('input[id$=tbDate]').datepicker("setDate", "today");
-
     $(".accordion-item-header.account_detail").click(function (e) {
         e.stopPropagation();
         e.stopImmediatePropagation();
@@ -336,6 +330,22 @@ function showBrandLevelDetails(data, currentSku) {
             accordionItemBody.css("maxHeight", "0");
         }
     });
+
+    if (window.wholesalerAccountData && window.wholesalerAccountData.length === 0) {
+        let orderData = data["available_orders"]["orders"][0];
+        if(!window.orderCartData.includes(filteredBrand[0]["sku"])) {
+            window.orderCartData.push(filteredBrand[0]["sku"]);
+        }
+        window.wholesalerAccountData.push({...orderData, "brandsku": `${orderData["sku"]}-${filteredBrand[0]["sku"]}`});
+        addWholeSalerAccordion(data, orderData, currentSku);
+    } else {
+        let orderData = data["available_orders"]["orders"][0];
+        if(!window.orderCartData.includes(filteredBrand[0]["sku"]) ) {
+            window.orderCartData.push(filteredBrand[0]["sku"]);
+            window.wholesalerAccountData.push({...orderData, "brandsku": `${orderData["sku"]}-${filteredBrand[0]["sku"]}`});
+            addWholeSalerAccordion(data, orderData, currentSku);
+        }
+    }
 
     $(".account_list .item").click(function (e) {
         e.stopPropagation();
@@ -375,18 +385,20 @@ function showBrandLevelDetails(data, currentSku) {
         }
     });
 
-    let parseData = getParsedData();
-    parseData && parseData?.["new_orders"] && parseData?.["new_orders"]?.["orders"] && parseData?.["new_orders"]?.["orders"].map((ordr, index) => {
-        window[`shouldNewWholeSalerAccountAdd-${index}`] = true;
-        ordr["product_details"].map(product => {
-            let parentSku = window.cartData[ordr["sku"]];
-            let skuproduct = parentSku[product["sku"]];
-            if(window[`shouldNewWholeSalerAccountAdd-${index}`] && skuproduct && (product["brand"] === currentSku && ordr["brandsku"].includes(currentSku))) {
-                addnewOrder(ordr, currentSku);
-                window[`shouldNewWholeSalerAccountAdd-${index}`] = false;
-            }
+    if (window.wholesalerAccountData && window.wholesalerAccountData.length !== 0 && window.cartData && Object.keys(window.cartData).length !== 0) {
+        let parseData = getParsedData();
+        parseData && parseData?.["new_orders"] && parseData?.["new_orders"]?.["orders"] && parseData?.["new_orders"]?.["orders"].map((ordr, index) => {
+            window[`shouldNewWholeSalerAccountAdd-${index}`] = true;
+            ordr["product_details"].map(product => {
+                let parentSku = window.cartData[ordr["sku"]];
+                let skuproduct = parentSku[product["sku"]];
+                if(window[`shouldNewWholeSalerAccountAdd-${index}`] && skuproduct && (product["brand"] === currentSku && ordr["brandsku"].includes(currentSku))) {
+                    addnewOrder(ordr, currentSku);
+                    window[`shouldNewWholeSalerAccountAdd-${index}`] = false;
+                }
+            });
         });
-    });
+    }
 }
 
 function addWholeSalerAccordionSku(data, orderData, currentSku) {
@@ -465,6 +477,14 @@ function addnewOrder(data, currentSku) {
             </div>
         </div>
     `);
+
+    const getLocalDataForDate = getParsedData();
+    const startDate = getLocalDataForDate['start_date'];
+    const endDate = getLocalDataForDate['last_date'];
+    const minDate = `${getMonthName( new Date(startDate))} ${new Date(startDate).getDate()}, ${String(new Date(startDate).getFullYear()).substring(2)}`;
+    const maxDate = `${getMonthName( new Date(endDate))} ${new Date(endDate).getDate()}, ${String(new Date(endDate).getFullYear()).substring(2)}`;
+    $('input[id$=tbDate]').datepicker({ dateFormat: 'M dd, y', minDate: minDate, maxDate: maxDate });
+    $('input[id$=tbDate]').datepicker("setDate", "today");
 
     data["product_details"].map((productData, index) => {
         let uuid = create_UUID();
@@ -563,6 +583,14 @@ function addnewOrderBrand(data, currentSku, skulevel) {
             </div>
         </div>
     `);
+
+    const getLocalDataForDate = getParsedData();
+    const startDate = getLocalDataForDate['start_date'];
+    const endDate = getLocalDataForDate['last_date'];
+    const minDate = `${getMonthName( new Date(startDate))} ${new Date(startDate).getDate()}, ${String(new Date(startDate).getFullYear()).substring(2)}`;
+    const maxDate = `${getMonthName( new Date(endDate))} ${new Date(endDate).getDate()}, ${String(new Date(endDate).getFullYear()).substring(2)}`;
+    $('input[id$=tbDate]').datepicker({ dateFormat: 'M dd, y', minDate: minDate, maxDate: maxDate });
+    $('input[id$=tbDate]').datepicker("setDate", "today");
 
     data["product_details"].map((productData, index) => {
         console.log(productData);

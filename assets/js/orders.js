@@ -1,5 +1,6 @@
 function loadUserWelcomeUI(data) {
-    let lastOrder = data["previous_orders"]["orders"][0];
+    const lastOrder = data["previous_orders"]["orders"][0];
+    const containsPrevOrder = data["previous_orders"]["orders"].length;
     $(".header").removeClass('hide');
     $("#content_box").empty();
 
@@ -7,7 +8,7 @@ function loadUserWelcomeUI(data) {
         <div class="order_section">
             <div class="tabs">
                 <div class="tab-2 active">
-                    <div class="block active">
+                    <div class="block active ${containsPrevOrder ? '' : 'hide'}">
                         <input id="tab21" name="tabs-two" type="radio" checked="checked">
                         <label for="tab21" id="label">Last Order</label>
                     </div>
@@ -23,7 +24,7 @@ function loadUserWelcomeUI(data) {
                     </div>
                 </div>
                 <div class="tab-2">
-                    <div class="block">
+                    <div class="block ${containsPrevOrder ? '' : 'hide'}">
                         <input id="tab22" name="tabs-two" type="radio">
                         <label for="tab22" id="label">Order History</label>
                     </div>
@@ -43,7 +44,8 @@ function loadUserWelcomeUI(data) {
         </div>
     `);
 
-    addInputEventListener();
+    if(containsPrevOrder) {
+        addInputEventListener();
 
     $("#last_order_history").append(`
         <div class="order_card last_order" data=${encodeURIComponent(JSON.stringify(lastOrder))}>
@@ -107,17 +109,6 @@ function loadUserWelcomeUI(data) {
         siblingElement.siblings(".card_click")
         $("#progress_plan_main").removeClass("hide");
         siblingElement.siblings(".card_click").css("pointer-events", "unset");
-    });
-
-    $(".place_new_order").click(function (e) {
-        e.stopPropagation();
-        e.stopImmediatePropagation();
-        let data = localStorage.getItem("data");
-        let parsedData = JSON.parse(data);
-        // let currentElementData = $(this).parent().attr("data");
-        // let parsedCurrentElementData = JSON.parse(decodeURIComponent(currentElementData));
-        ToApp("choosebrands-screen", parsedData);
-        ToBot("place-new-order", {});
     });
 
     data && data["previous_orders"] && data["previous_orders"]["orders"] && data["previous_orders"]["orders"].map((orderData, index) => {
@@ -378,4 +369,14 @@ function loadBrandSelectionUI(data) {
         ToBot("select-brand", parsedData);
         isBrandSku ? showSkuLevelDetailsBrand(parsedData, currentElementSkuData) : showBrandLevelDetails(parsedData, currentElementSkuData);
     });
+}
+
+function loadBrandSelectionUIByBrandName(data, name) {
+    const currentElementSkuData = data["selected_brand"];
+    if(window.dataStore && Object.keys(window.dataStore).length !== 0) {
+        window.dataStore["selected_brand"] = currentElementSkuData;
+    }
+    const filteredBrand = data["plan_progress"]["brands"].filter(brand => brand["sku"] === currentElementSkuData);
+    const isBrandSku = filteredBrand[0]["isSku"];
+    isBrandSku ? showSkuLevelDetailsBrand(data, currentElementSkuData) : showBrandLevelDetails(data, currentElementSkuData);
 }
