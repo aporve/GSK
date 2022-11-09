@@ -47,69 +47,69 @@ function loadUserWelcomeUI(data) {
     if(containsPrevOrder) {
         addInputEventListener();
 
-    $("#last_order_history").append(`
-        <div class="order_card last_order" data=${encodeURIComponent(JSON.stringify(lastOrder))}>
-            <div class="title backbtn hide">
-                <div class="arrow name flex back_button" style="font-weight: 400; font-size: 14px; color: #151515;">
-                    <img src="/gsk/assets/images/svg/right.svg" style="transform: rotate(180deg);" />
-                    <span style="margin-left: 5px;">Back</span>
-                </div>
-                <div class="arrow hide">
-                    <img src="/gsk/assets/images/svg/edit.svg" style="height: 20px; width: 20px;"/>
-                </div>
-            </div>
-            <div class="card_click" data=${encodeURIComponent(JSON.stringify(lastOrder))}>
-                <div class="title">
-                    <div class="name">${lastOrder["account_no"]}</div>
-                    <div class="arrow">
-                        <img src="/gsk/assets/images/svg/right.svg" />
+        $("#last_order_history").append(`
+            <div class="order_card last_order" data=${encodeURIComponent(JSON.stringify(lastOrder))}>
+                <div class="title backbtn hide">
+                    <div class="arrow name flex back_button" style="font-weight: 400; font-size: 14px; color: #151515;">
+                        <img src="/gsk/assets/images/svg/right.svg" style="transform: rotate(180deg);" />
+                        <span style="margin-left: 5px;">Back</span>
+                    </div>
+                    <div class="arrow hide">
+                        <img src="/gsk/assets/images/svg/edit.svg" style="height: 20px; width: 20px;"/>
                     </div>
                 </div>
-                <div class="flex">
-                    <div class="order_status">
-                        <div class="info">Order No: ${lastOrder["order_no"]}</div>
-                        <div class="info">${lastOrder["status"]}${lastOrder["delivery_date"] ? " &nbsp;|&nbsp; Delivery On: " : ""}${lastOrder["delivery_date"]}</div>
+                <div class="card_click" data=${encodeURIComponent(JSON.stringify(lastOrder))}>
+                    <div class="title">
+                        <div class="name">${lastOrder["account_no"]}</div>
+                        <div class="arrow">
+                            <img src="/gsk/assets/images/svg/right.svg" />
+                        </div>
                     </div>
-                    <div class="order_on_date">
-                        <div class="info">Ordered On:</div>
-                        <div class="info">${lastOrder["ordered_date"]}</div>
+                    <div class="flex">
+                        <div class="order_status">
+                            <div class="info">Order No: ${lastOrder["order_no"]}</div>
+                            <div class="info">${lastOrder["status"]}${lastOrder["delivery_date"] ? " &nbsp;|&nbsp; Delivery On: " : ""}${lastOrder["delivery_date"]}</div>
+                        </div>
+                        <div class="order_on_date">
+                            <div class="info">Ordered On:</div>
+                            <div class="info">${lastOrder["ordered_date"]}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="order_cart history hide">
+                    <div class="title">
+                        <div class="name">Order Details</div>
+                    </div>
+                    <div class="detail">
+                        <table class="ui very basic table" skudata=${lastOrder["sku"]}>
+                            <thead>
+                                <tr class="info_row">
+                                    <td class="info_data" colspan="1">Est. Price</td>
+                                    <td class="info_data" colspan="1">Units</td>
+                                    <td class="info_data" colspan="1">Free Goods</td>
+                                    <td class="info_data" colspan="1">${Boolean(lastOrder["on_invoice"]) ? "On Invoice Discount" : "Off Invoice Discount"}</td>
+                                    <td class="info_data" colspan="1">Pay Term</td>
+                                </tr>
+                            </thead>
+                            <tbody id="order_card_tablebody"></tbody>
+                        </table>
                     </div>
                 </div>
             </div>
-            <div class="order_cart history hide">
-                <div class="title">
-                    <div class="name">Order Details</div>
-                </div>
-                <div class="detail">
-                    <table class="ui very basic table" skudata=${lastOrder["sku"]}>
-                        <thead>
-                            <tr class="info_row">
-                                <td class="info_data" colspan="1">Est. Price</td>
-                                <td class="info_data" colspan="1">Units</td>
-                                <td class="info_data" colspan="1">Free Goods</td>
-                                <td class="info_data" colspan="1">${Boolean(lastOrder["on_invoice"]) ? "On Invoice Discount" : "Off Invoice Discount"}</td>
-                                <td class="info_data" colspan="1">Pay Term</td>
-                            </tr>
-                        </thead>
-                        <tbody id="order_card_tablebody"></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <div class="progress_plan" id="progress_plan_main"></div>
-    `);
-
-    $(".back_button").click(function (e) {
-        e.stopPropagation();
-        e.stopImmediatePropagation();
-        let siblingElement = $(this).parent().siblings(".order_cart.history")
-        siblingElement.addClass("hide");
-        $(this).parent().addClass("hide");
-        siblingElement.siblings(".card_click")
-        $("#progress_plan_main").removeClass("hide");
-        siblingElement.siblings(".card_click").css("pointer-events", "unset");
-    });
+    
+            <div class="progress_plan" id="progress_plan_main"></div>
+        `);
+    
+        $(".back_button").click(function (e) {
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+            let siblingElement = $(this).parent().siblings(".order_cart.history")
+            siblingElement.addClass("hide");
+            $(this).parent().addClass("hide");
+            siblingElement.siblings(".card_click")
+            $("#progress_plan_main").removeClass("hide");
+            siblingElement.siblings(".card_click").css("pointer-events", "unset");
+        });
 
     data && data["previous_orders"] && data["previous_orders"]["orders"] && data["previous_orders"]["orders"].map((orderData, index) => {
         let classValue = "success";

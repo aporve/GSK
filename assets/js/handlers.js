@@ -796,6 +796,7 @@ function updateCounter(counterInput, type, currentSku, skulevel, brandData) {
                     [skuData]: $input.val()
                 }
             };
+            
             parseStoredData && parseStoredData["new_orders"] && parseStoredData["new_orders"]["orders"] && parseStoredData["new_orders"]["orders"].forEach(order => {
                 if (order["sku"] === parentSkuData) {
                     order["product_details"].forEach(product => {
