@@ -11,7 +11,7 @@ function loadOrderCart(data) {
             <div>
                 ${data["rebates_orders"] && data["rebates_orders"]["orders"] && `<div class="menu_header"><div class="category_label">Period Eligible / Rebates</div></div>`}
                 <div id="rebates_order">
-                    ${data["rebates_orders"] && data["rebates_orders"]["orders"] && getAccordianAccounts([data["rebates_orders"]["orders"][0]], true)}
+                    ${data["rebates_orders"] && data["rebates_orders"]["orders"] && data["rebates_orders"]["orders"].length !== 0 && getAccordianAccounts([data["rebates_orders"]["orders"][0]], true)}
                 </div>
             </div>
         </div>
