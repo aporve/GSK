@@ -9,8 +9,8 @@
 (function () {
     setTimeout(() => {
         GlobalVarInit();
-        CallScreen(1);
-        CallScreen(4);
+        // CallScreen(1);
+        // CallScreen(4);
     }, 500);
 })();
 
@@ -336,7 +336,7 @@ window.addEventListener('message', function (eventData) {
         let data = parsedEventData.data;
         console.log("eventName---", eventName);
         console.log('Event Data---',data);
-        ToApp("choosebrands-screen-from-cart", data);
+        ToApp("userwelcome-screen", data);
     }
 
 });
