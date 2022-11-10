@@ -97,6 +97,16 @@ window.addEventListener('message', function (eventData) {
         return;
     }
 
+    if (parsedData?.event_code == 'custom-event' && parsedData?.data?.code == "load-userwelcome-screen") {
+        document.getElementById('ymIframe').contentWindow.postMessage(JSON.stringify({
+            event_code: 'load-userwelcome-screen',
+            data:  parsedData.data.data
+        }), '*');
+        console.log("load-userwelcome-screen")
+        console.log('Event Data-->>',parsedData.data.data)
+        return;
+    }
+
 
 
     // Send events to bot

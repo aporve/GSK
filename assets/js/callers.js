@@ -331,4 +331,12 @@ window.addEventListener('message', function (eventData) {
         ToApp(eventName,data);
     }
 
+    if (parsedEventData.event_code === "load-userwelcome-screen" && parsedEventData.data) {
+        let eventName = parsedEventData.event_code;
+        let data = parsedEventData.data;
+        console.log("eventName---", eventName);
+        console.log('Event Data---',data);
+        ToApp("choosebrands-screen-from-cart", data);
+    }
+
 });
