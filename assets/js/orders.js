@@ -182,10 +182,10 @@ function loadUserWelcomeUI(data) {
                                     <div class="title">
                                         <div class="name" skudata=${item["sku"]}>${item["name"]}</div>
                                         <div class="arrow edit quantityEdit">
-                                            <img src="/assets/images/svg/edit.svg" key=${index} />
+                                            <img src="/gsk/assets/images/svg/edit.svg" key=${index} />
                                         </div>
                                         <div class="arrow edit quantitySave hide">
-                                            <img src="/assets/images/svg/save.svg" key=${index} />
+                                            <img src="/gsk/assets/images/svg/save.svg" key=${index} />
                                         </div>
                                     </div>
                                 </td>
@@ -263,10 +263,10 @@ function loadUserWelcomeUI(data) {
                                     <div class="title">
                                         <div class="name">${item["name"]}</div>
                                         <div class="arrow edit quantityEdit hide">
-                                            <img src="/assets/images/svg/edit.svg" key=${index} />
+                                            <img src="/gsk/assets/images/svg/edit.svg" key=${index} />
                                         </div>
                                         <div class="arrow edit quantitySave hide">
-                                            <img src="/assets/images/svg/save.svg" />
+                                            <img src="/gsk/assets/images/svg/save.svg" />
                                         </div>
                                     </div>
                                 </td>
