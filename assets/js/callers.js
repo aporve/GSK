@@ -339,4 +339,20 @@ window.addEventListener('message', function (eventData) {
         ToApp("userwelcome-screen", data);
     }
 
+    if (parsedEventData.event_code === "show-brand-selection" && parsedEventData.data) {
+        let eventName = parsedEventData.event_code;
+        let data = parsedEventData.data;
+        console.log("eventName---", eventName);
+        console.log('Event Data---',data);
+        ToApp("show-brand-selection", data);
+    }
+
+    if (parsedEventData.event_code === "show-brand-detailing" && parsedEventData.data) {
+        let eventName = parsedEventData.event_code;
+        let data = parsedEventData.data;
+        console.log("eventName---", eventName);
+        console.log('Event Data---',data);
+        ToApp("show-brand-detailing", data);
+    }
+
 });

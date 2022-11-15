@@ -107,6 +107,26 @@ window.addEventListener('message', function (eventData) {
         return;
     }
 
+    if (parsedData?.event_code == 'custom-event' && parsedData?.data?.code == "show-brand-selection") {
+        document.getElementById('ymIframe').contentWindow.postMessage(JSON.stringify({
+            event_code: 'show-brand-selection',
+            data:  parsedData.data.data
+        }), '*');
+        console.log("show-brand-selection")
+        console.log('Event Data-->>',parsedData.data.data)
+        return;
+    }
+
+    if (parsedData?.event_code == 'custom-event' && parsedData?.data?.code == "show-brand-detailing") {
+        document.getElementById('ymIframe').contentWindow.postMessage(JSON.stringify({
+            event_code: 'show-brand-detailing',
+            data:  parsedData.data.data
+        }), '*');
+        console.log("show-brand-detailing")
+        console.log('Event Data-->>',parsedData.data.data)
+        return;
+    }
+
 
 
     // Send events to bot
