@@ -39,6 +39,31 @@ function injectDynamicCssToParent() {
     parentCssHead.appendChild(parentStyles);
 }
 
+function injectDynamicCssforblur() {
+    var ymFrameHead = window.frames["ymIframe"].document.getElementsByTagName("head")[0];
+    var modularStyles = document.createElement('style');
+    modularStyles.type = 'text/css';
+    var css = '#chatBoxMainContainer.message-icons.live-chat { margin: 0 0 0 40%; background-image: url("https://cdn.yellowmessenger.com/zlqqXMmsw3z91663746912397.png")}*{margin:0;padding:0}.mod-head-side-bar-container .overflow-container-sidebar{position:absolute;top:0;left:0;right:0;bottom:0;}.mod-head-side-bar-container .overflow-container-sidebar .sidebar-wrapper{display:flex;flex-direction:column;justify-content:center;background-color:#fff;padding:0;width:40%;list-style:none;height:100%;justify-content:space-between;}.mod-head-side-bar-container .overflow-container-sidebar .sidebar-wrapper .side-bar-icon-box{text-decoration:none;color:#fff;padding:5px;cursor:pointer;display:flex}.mod-head-side-bar-container .overflow-container-sidebar .sidebar-wrapper .side-bar-icon-box:hover{background:#caf7e3;border-right:3px solid #39a6a3}.mod-head-side-bar-container .overflow-container-sidebar .sidebar-wrapper .side-bar-icon-box .sidebar-img-icon{width:3.5rem;height:auto;pointer-events:none;}.mod-head-side-bar-container .overflow-container-header{position:fixed;top:0;right:0;width:calc(100% - 4rem - 2px);z-index:99999}.mod-head-side-bar-container .overflow-container-header .header-wrapper{display:flex;flex-direction:row;align-items:center;justify-content:space-between;background-color:#fff;padding:0;list-style:none;height:3rem;border:.5px solid #ccc;border-left:0; margin-left:30%}.mod-head-side-bar-container .overflow-container-header .header-wrapper .header-title{font-size:16px;font-weight:600;color:#999;padding:0 1rem}.mod-head-side-bar-container .overflow-container-header .header-wrapper .icons-box{padding:0 1rem}.mod-head-side-bar-container .overflow-container-header .header-wrapper .icons-box .header-bar-icon-box{color:#000;font-weight:900;font-size:20px;width:100%;padding-left:.5rem;cursor:pointer}.mod-head-side-bar-container .overflow-container-header .header-wrapper .icons-box .header-bar-icon-box .header-icons{width:1.2rem;height:auto} .message-icons.live-chat .noPaddingLeft.cardsNoBotPersona { width:100%}  @media only screen and (min-width: 768px) {.cards.slick-initialized .slick-slide {height: auto;border-radius: 10px;position: relative;margin-bottom: 10px;overflow: hidden;/* width: 300px; */max-width: none; min-width: none; display: inline-block !important;width: 700px;padding-bottom: 0px !important;margin-right: 10px !important;box-shadow: rgb(0 0 0 / 10%) 0px 1px 3px 0px, rgb(0 0 0 / 10%) 0px 0px 1px 0px !important;} } .send-input { margin-left:40%} #chatDetails { margin-left:40%} #bodyCasontent{-webkit-filter: blur(2px);}';
+    if (modularStyles.styleSheet) {
+        modularStyles.styleSheet.cssText = css;
+    } else {
+        modularStyles.appendChild(document.createTextNode(css));
+    }
+    ymFrameHead.appendChild(modularStyles);
+}
+
+function show_image() {
+    console.error('---Blur Image---');
+    var img = document.createElement("img");
+    img.src = 'https://cdn.yellowmessenger.com/ynjHmxmnXgQj1668574967995.jpg';
+    img.width = '1000';
+    img.height = '1000';
+
+    // This next line will just add it to the <body> tag
+    // document.body.appendChild(img);
+    document.getElementById('iframe').appendChild(img)
+}
+
 window.addEventListener('message', function (eventData) {
     let parsedData = JSON.parse(eventData.data);
 
@@ -132,6 +157,8 @@ window.addEventListener('message', function (eventData) {
     // Send events to bot
 
     if (parsedData?.event_code == 'logout') {
+        injectDynamicCssforblur();
+        // show_image();
         console.log("\n\n\n <--- Logout event in parent iframe ---> \n\n\n", parsedData);
         window.frames.ymIframe.chat.send({
             event: {
