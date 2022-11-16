@@ -37,7 +37,6 @@ function show_image() {
     document.getElementById('iframe').appendChild(img);
     var element = document.getElementById("iframe");
    element.classList.add("blur");
-  document.getElementById("placeNewOrder").disabled = true;
 }
 
 function remove_blur() {
@@ -46,7 +45,7 @@ function remove_blur() {
 }
 
 window.addEventListener('message', function (eventData) {
-    
+
     let parsedEventData = JSON.parse(eventData.data);
   
     if (parsedEventData.event_code === "welcome-screen" && parsedEventData.data) {
