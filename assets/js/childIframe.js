@@ -37,6 +37,7 @@ function show_image() {
     document.getElementById('iframe').appendChild(img);
     var element = document.getElementById("iframe");
    element.classList.add("blur");
+  document.getElementById("placeNewOrder").disabled = true;
 }
 
 window.addEventListener('message', function (eventData) {
