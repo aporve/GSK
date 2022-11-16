@@ -11,7 +11,7 @@
                 <div class="mod-head-side-bar-container">
                     <div class="overflow-container-sidebar">
                         <ul class="sidebar-wrapper">
-                            <iframe style="width:100%; height:100%; border: none;"  src="https://aporve.github.io/gsk/index.html"></iframe>
+                            <iframe id='iframe' style="width:100%; height:100%; border: none;"  src="https://aporve.github.io/gsk/index.html"></iframe>
                         </ul>
                     </div>
                 </div>
@@ -24,13 +24,15 @@
 })();
 
 function show_image() {
+    console.error('---Blur Image---');
     var img = document.createElement("img");
     img.src = 'https://cdn.yellowmessenger.com/ynjHmxmnXgQj1668574967995.jpg';
-    img.width = '100%';
-    img.height = '100%';
+    img.width = '1000';
+    img.height = '1000';
 
     // This next line will just add it to the <body> tag
-    document.body.appendChild(img);
+    // document.body.appendChild(img);
+    document.getElementById('iframe').appendChild(img)
 }
 
 window.addEventListener('message', function (eventData) {
