@@ -17,7 +17,7 @@ function loadUserWelcomeUI(data) {
                             <div class="upper_history_container" id="last_order_history"></div>
                             <div class="btn_wrapper">
                                 <div class="btnbox">
-                                    <a class="btn outline place_new_order" href="#">Place New Order</a>
+                                    <a id="placeNewOrder" class="btn outline place_new_order" href="#">Place New Order</a>
                                 </div>
                             </div>
                         </div>
