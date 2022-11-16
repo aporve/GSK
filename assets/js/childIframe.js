@@ -49,7 +49,7 @@ window.addEventListener('message', function (eventData) {
     let parsedEventData = JSON.parse(eventData.data);
   
     if (parsedEventData.event_code === "welcome-screen" && parsedEventData.data) {
-        remove_blur()
+        // remove_blur()
         document.querySelector("iframe").contentWindow.postMessage(JSON.stringify({
             event_code: 'welcome-screen',                                                // added new event name
             data: parsedEventData.data
@@ -73,7 +73,7 @@ window.addEventListener('message', function (eventData) {
 
 
     if (parsedEventData.event_code === "userwelcome-screen" && parsedEventData.data) {
-        remove_blur()
+        // remove_blur()
         document.querySelector("iframe").contentWindow.postMessage(JSON.stringify({
             event_code: 'userwelcome-screen',                                                // added new event name
             data: parsedEventData.data
@@ -144,7 +144,7 @@ window.addEventListener('message', function (eventData) {
 
     // send event to bot
     if(parsedEventData.event_code === "logout") {
-        show_image()
+        // show_image()
         console.log(' logout Data in child Iframe~~~>>', parsedEventData.data)
         parent.postMessage(JSON.stringify({
             event_code: 'logout',
