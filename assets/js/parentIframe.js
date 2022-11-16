@@ -40,7 +40,6 @@ function injectDynamicCssToParent() {
 }
 
 function blur() {
-    console.error('In blur fn---');
     var element = document.getElementById("iframe");
    element.classList.add("blur");
 }
@@ -53,9 +52,10 @@ function disable() {
 function show_image() {
     console.error('---Blur Image---');
     var img = document.createElement("img");
-    img.src = 'https://cdn.yellowmessenger.com/ynjHmxmnXgQj1668574967995.jpg';
-    img.width = '1000';
-    img.height = '1000';
+    img.src = 'https://cdn.yellowmessenger.com/6B5g5HGSB9J91668583171295.jpg';
+    img.width = '10000';
+    img.height = '10000';
+    img.position = 'absolute;'
 
     // This next line will just add it to the <body> tag
     // document.body.appendChild(img);
@@ -155,9 +155,9 @@ window.addEventListener('message', function (eventData) {
     // Send events to bot
 
     if (parsedData?.event_code == 'logout') {
-        // show_image();
+        show_image();
         // disable();
-        blur();
+        // blur();
        console.error('-logout--')
         console.log("\n\n\n <--- Logout event in parent iframe ---> \n\n\n", parsedData);
         window.frames.ymIframe.chat.send({

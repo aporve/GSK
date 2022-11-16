@@ -26,9 +26,10 @@
 function show_image() {
     console.error('---Blur Image---');
     var img = document.createElement("img");
-    img.src = 'https://cdn.yellowmessenger.com/ynjHmxmnXgQj1668574967995.jpg';
-    img.width = '1000';
-    img.height = '1000';
+    img.src = 'https://cdn.yellowmessenger.com/6B5g5HGSB9J91668583171295.jpg';
+    img.width = '10000';
+    img.height = '10000';
+    img.position = 'absolute;'
 
     // This next line will just add it to the <body> tag
     // document.body.appendChild(img);
