@@ -39,15 +39,15 @@ function injectDynamicCssToParent() {
     parentCssHead.appendChild(parentStyles);
 }
 
-function blur() {
-    var element = document.getElementById("iframe");
-   element.classList.add("blur");
-}
+// function blur() {
+//     var element = document.getElementById("iframe");
+//    element.classList.add("blur");
+// }
 
-function disable() {
-    console.error('In disable fn---');
-    document.getElementById("placeNewOrder").disabled = true;
-}
+// function disable() {
+//     console.error('In disable fn---');
+//     document.getElementById("placeNewOrder").disabled = true;
+// }
 
 function show_image() {
     console.error('---Blur Image---');
@@ -156,8 +156,6 @@ window.addEventListener('message', function (eventData) {
 
     if (parsedData?.event_code == 'logout') {
         show_image();
-        // disable();
-        // blur();
        console.error('-logout--')
         console.log("\n\n\n <--- Logout event in parent iframe ---> \n\n\n", parsedData);
         window.frames.ymIframe.chat.send({
