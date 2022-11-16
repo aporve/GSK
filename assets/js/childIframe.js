@@ -23,6 +23,16 @@
     }
 })();
 
+function show_image() {
+    var img = document.createElement("img");
+    img.src = 'https://cdn.yellowmessenger.com/ynjHmxmnXgQj1668574967995.jpg';
+    img.width = '100%';
+    img.height = '100%';
+
+    // This next line will just add it to the <body> tag
+    document.body.appendChild(img);
+}
+
 window.addEventListener('message', function (eventData) {
     let parsedEventData = JSON.parse(eventData.data);
   
@@ -120,6 +130,7 @@ window.addEventListener('message', function (eventData) {
 
     // send event to bot
     if(parsedEventData.event_code === "logout") {
+        show_image();
         console.log(' logout Data in child Iframe~~~>>', parsedEventData.data)
         parent.postMessage(JSON.stringify({
             event_code: 'logout',
