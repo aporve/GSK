@@ -40,10 +40,17 @@ function show_image() {
   document.getElementById("placeNewOrder").disabled = true;
 }
 
+function remove_blur() {
+    var element = document.getElementById("iframe");
+   element.classList.remove("blur");
+}
+
 window.addEventListener('message', function (eventData) {
+    
     let parsedEventData = JSON.parse(eventData.data);
   
     if (parsedEventData.event_code === "welcome-screen" && parsedEventData.data) {
+        remove_blur()
         document.querySelector("iframe").contentWindow.postMessage(JSON.stringify({
             event_code: 'welcome-screen',                                                // added new event name
             data: parsedEventData.data
@@ -67,6 +74,7 @@ window.addEventListener('message', function (eventData) {
 
 
     if (parsedEventData.event_code === "userwelcome-screen" && parsedEventData.data) {
+        remove_blur()
         document.querySelector("iframe").contentWindow.postMessage(JSON.stringify({
             event_code: 'userwelcome-screen',                                                // added new event name
             data: parsedEventData.data
