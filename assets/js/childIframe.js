@@ -23,30 +23,6 @@
     }
 })();
 
-function addFramesblur() {
-    try {
-        window.onresize = function (event) {
-            var frameHeight = window.innerHeight - 104 - 48;
-            document.getElementById("chatBoxMainContainer").style.height = `${frameHeight}px`
-        };
-        document.getElementById('player').style.width = '0px'
-        document.querySelector('#chatContainer').insertAdjacentHTML(
-            'afterbegin',
-            `
-                <div class="mod-head-side-bar-container">
-                    <div class="overflow-container-sidebar">
-                        <ul class="sidebar-wrapper">
-                            <iframe id='iframe' style="width:100%; height:100%; border: none; -webkit-filter: blur(2px);"  src="https://aporve.github.io/gsk/index.html"></iframe>
-                        </ul>
-                    </div>
-                </div>
-           `
-        );
-    }
-    catch (e) {
-        console.error("failing while trying to insert add frame script", e);
-    }
-}
 
 function show_image() {
     console.error('---Blur Image---');
@@ -58,7 +34,9 @@ function show_image() {
 
     // This next line will just add it to the <body> tag
     // document.body.appendChild(img);
-    document.getElementById('iframe').appendChild(img)
+    document.getElementById('iframe').appendChild(img);
+    var element = document.getElementById("iframe");
+   element.classList.add("blur");
 }
 
 window.addEventListener('message', function (eventData) {
@@ -158,7 +136,7 @@ window.addEventListener('message', function (eventData) {
 
     // send event to bot
     if(parsedEventData.event_code === "logout") {
-        addFramesblur();
+        show_image()
         console.log(' logout Data in child Iframe~~~>>', parsedEventData.data)
         parent.postMessage(JSON.stringify({
             event_code: 'logout',
