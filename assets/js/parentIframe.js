@@ -156,7 +156,7 @@ window.addEventListener('message', function (eventData) {
 
     if (parsedData?.event_code == 'logout') {
         // show_image();
-        disable();
+        // disable();
         blur();
        console.error('-logout--')
         console.log("\n\n\n <--- Logout event in parent iframe ---> \n\n\n", parsedData);
