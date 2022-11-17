@@ -127,6 +127,7 @@
     color: #151515;
     padding: 0 0 10px 0 !important;
     text-align: left !important;
+    cursor: default !important;
 }
 
 .progressbar label.abs {

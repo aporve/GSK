@@ -60,12 +60,12 @@ function showHeader(data) {
         </div>
     `);
 
-    $(".svg_icon_wrapper").click(function(e) {
+    /* $(".svg_icon_wrapper").click(function(e) {
         e.stopPropagation();
         e.stopImmediatePropagation();
         let parsedData = JSON.parse(localStorage.getItem("data"));
         ToApp("userwelcome-screen", parsedData)
-    });
+    }); */
 
     $(".profile_section").click(function(e) {
         e.stopPropagation();
