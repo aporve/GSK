@@ -22,6 +22,10 @@
     animation: unset;
 }
 
+.progress_plan #plan_items {
+    padding: 0 10px;
+}
+
 .progress_plan .grouped{
     width: 100%;
 }
@@ -79,7 +83,7 @@
 }
 
 .progressbar .progressbar_wrapper {
-    margin-top: 5px;
+    /* margin-top: 5px; */
 }
 
 .progressbar .progressbar_ratio {
@@ -94,6 +98,8 @@
     background-color: #f36633;
     /* opacity: 0.9; */
     border-radius: 6px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
     z-index: 2;
 }
 
@@ -115,7 +121,7 @@
     margin: auto 0;
     display: flex;
     align-items: center;
-    font-weight: 400;
+    font-weight: 500;
     font-size: 14px;
     color: #ffffff;
 }
@@ -135,8 +141,8 @@
 }
 
 .main {
-    background: #ffffff;
-    border: 1px solid #959595;
+    background: #959595;
+    /* border: 1px solid #959595; */
     /* box-shadow: 0px 3px 12px rgba(84, 79, 64, 0.1); */
     border-radius: 5px;
     width: 100%;
@@ -186,31 +192,47 @@
 .sub-block.withoutmarkings:not(:last-child)::after  {
     content: "";
     position: absolute;
-    height: 5px;
-    width: 1.5px;
+    height: 10px;
+    width: 4px;
     border-radius: 2px;
-    background: #959595;
+    background: #fff;
 }
-.sub-block.withmarkings::before ,
-.sub-block.withoutmarkings::before {
-    top: -6px;
+.sub-block.withmarkings::before {
+    /* top: -6.8px; */
     right: -1px;
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
 }
 
-.sub-block.withmarkings::after ,
-.sub-block.withoutmarkings::after {
-    bottom: -6px;
+.sub-block.withmarkings::after {
+    /* bottom: -6.8px; */
     right: -1px;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
 }
 
 .sub-block.withoutmarkings:not(:last-child)::before,
 .sub-block.withoutmarkings:not(:last-child)::after {
     content: "";
     position: absolute;
-    height: 5px;
-    width: 1.5px;
-    border-radius: 2px;
+    height: 6px;
+    width: 4px;
+    border-radius: unset;
     background: #fff;
+}
+
+.sub-block.withoutmarkings:not(:last-child)::before {
+    top: -6px;
+    right: -1px;
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
+}
+
+.sub-block.withoutmarkings:not(:last-child)::after {
+    bottom: -6px;
+    right: -1px;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
 }
 
 .progressbar .detail_bar .sub-block  {
@@ -524,7 +546,7 @@ table {
     font-size: 12px;
     line-height: 26px;
     text-transform: uppercase;
-    color: #151515;
+    color: #f36633;
 }
 
 .choosebrands .category_label {
@@ -542,9 +564,10 @@ table {
 }
 
 .choosebrands .menu_header .icon {
-    height: 20px;
-    width: 20px;
+    height: 30px;
+    width: 30px;
     position: relative;
+    margin-top: 10px;
 }
 
 .choosebrands .menu_header .icon .count_wrapper { 
@@ -552,14 +575,16 @@ table {
     align-items: center;
     justify-content: center;
     padding: 3px;
-    background: #FDE0D6;
-    color: #F36633;
+    background: #F36633;
+    color: #FDE0D6;
     font-size: 10px;
     font-weight: 600;
     border-radius: 50%;
     position: absolute;
-    top: -5px;
-    right: -5px;
+    top: -10px;
+    right: 2px;
+    height: 20px;
+    width: 20px;
 }
 
 .choosebrands .sub_detail {
@@ -635,7 +660,11 @@ table {
 
 .accordion-item.inverted div,
 .accordion-item.inverted input  {
-    color: #fff;
+    color: #959595;
+}
+
+.accordion-item.inverted div thead tr td.info_data {
+    color: #F36633;
 }
 
 .accordion-item-header {
@@ -1043,7 +1072,8 @@ table {
 }
 
 .inverted {
-    background: #959595 !important;
+    /* background: #959595 !important; */
+    background: #3f3f3f !important;
     color: #fff !important; 
     border-color: #959595 !important;
 }
@@ -1067,4 +1097,33 @@ table {
 .profile_section_container {
     height: 85%;
     overflow-y: auto;
+}
+
+.rounded_btn {
+    cursor: pointer;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    border-bottom: 1px solid #fff;
+    margin-top: 4px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.rounded_btn .inner {
+    background: #f36633;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+}
+
+.rounded_btn .inner::after {
+    content: '+';
+    font-size: 18px;
+    font-weight: 600;
+    height: 20px;
+    width: 20px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

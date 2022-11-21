@@ -153,7 +153,7 @@ function ToBot(eventName, data) {
                 event_code: eventName,
                 data: data
             }), '*');
-            if(window.location.hostname === 'localhost') {
+            if(window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
                 ToApp('ordercart-screen', data);
             }
             break;
@@ -174,7 +174,7 @@ function ToBot(eventName, data) {
                 event_code: eventName,
                 data: data
             }), '*');
-            if(window.location.hostname === 'localhost') {
+            if(window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
                 loadUserWelcomeUI(data);
                 data["plan_progress"] && loadPlanProgress(data["plan_progress"], true, true);
             }
@@ -190,7 +190,7 @@ function ToBot(eventName, data) {
                 event_code: eventName,
                 data: data
             }), '*');
-            if(window.location.hostname === 'localhost') {
+            if(window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
                 ToApp("userwelcome-screen", data);
             }
             break;

@@ -45,7 +45,7 @@ function showSkuLevelDetailsBrand(data, currentSku) {
                 <div class="accordion-item inverted">
                     <div class="accordion-item-header account_detail white">${order["account_no"]}</div>
                     <div class="accordion-item-body parent orderbrandselection">
-                        <div class="accordion-item-body-content" style="max-height: 300px; overflow: auto;">
+                        <div class="accordion-item-body-content" style="max-height: 300px; overflow-y: auto;">
                             <div class="date-picker-value pointernone">
                                 ${showDatePickerWhite()}
                             </div>
@@ -231,6 +231,12 @@ function showBrandLevelDetails(data, currentSku) {
             <div class="account_list"></div>
         </div>
     `);
+
+    /* $(".order_details_container.choosebrands").mCustomScrollbar({
+        theme: "dark-thin",
+        scrollButtons: { enable: true },
+        autoHideScrollbar: true
+    }); */
     
     $("#previous-orders-accordion").empty();
     lastOrder && [lastOrder].map((order) => {
@@ -239,16 +245,16 @@ function showBrandLevelDetails(data, currentSku) {
                 <div class="accordion-item inverted">
                     <div class="accordion-item-header account_detail white">${order["account_no"]}</div>
                     <div class="accordion-item-body parent orderbrandselection">
-                        <div class="accordion-item-body-content" style="max-height: 300px; overflow: auto;">
+                        <div class="accordion-item-body-content" style="max-height: 300px; overflow-y: auto;">
                             <div class="date-picker-value pointernone">
                                 ${showDatePickerWhite()}
                             </div>
                             <div class="flex">
                                 <div class="order_status">
-                                    <div class="info">Order No: ${lastOrder["order_no"]}</div>
+                                    <div class="info"><span class="highlight">Order No:</span> ${lastOrder["order_no"]}</div>
                                 </div>
                                 <div class="order_on_date">
-                                    <div class="info">Status: ${lastOrder["ordered_date"]}</div>
+                                    <div class="info"><span class="highlight">Status:</span> ${lastOrder["ordered_date"]}</div>
                                 </div>
                             </div>
                             <div class="title">PRODUCTS</div>
@@ -469,8 +475,8 @@ function addnewOrder(data, currentSku) {
                     </div>
                 </div>
                 <div class="accordion-item-body parent opened orderbrandselection">
-                    <div class="accordion-item-body-content" style="max-height: 270px; overflow: auto;">
-                        <div class="date-picker-value">
+                    <div class="accordion-item-body-content" style="max-height: 270px; overflow-y: auto;">
+                        <div class="date-picker-value" id="dpicker-${currentSku}">
                             ${showDatePicker()}
                         </div>
                         <table class="accordian table">
@@ -574,7 +580,7 @@ function addnewOrderBrand(data, currentSku, skulevel) {
             <div class="accordion-item">
                 <div class="accordion-item-header orderdetail active">${data["account_no"]}</div>
                 <div class="accordion-item-body parent opened orderbrandselection">
-                    <div class="accordion-item-body-content" style="max-height: 270px; overflow: auto;">
+                    <div class="accordion-item-body-content" style="max-height: 270px; overflow-y: auto;">
                         <div class="date-picker-value">
                             ${showDatePicker()}
                         </div>

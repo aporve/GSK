@@ -141,7 +141,7 @@ function getAccordianAccounts(data, rebates) {
                         </div>
                     </div>
                     <div class="accordion-item-body parent opened">
-                        <div class="accordion-item-body-content" style="max-height: 300px; overflow: auto;">
+                        <div class="accordion-item-body-content" style="max-height: 300px; overflow-y: auto;">
                             <div class="date-picker-value date_order ${order["ordered_date"] ? "" : "hide"}">
                                 <div class="flex calendar-picker">
                                     <img class="picker" src="/gsk/assets/images/svg/calendar.svg" />

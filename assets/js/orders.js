@@ -60,15 +60,23 @@ function loadUserWelcomeUI(data) {
                 </div>
                 <div class="card_click" data=${encodeURIComponent(JSON.stringify(lastOrder))}>
                     <div class="title">
-                        <div class="name">${lastOrder["account_no"]}</div>
+                        <div class="name highlight">${lastOrder["account_no"]}</div>
                         <div class="arrow">
                             <img src="/gsk/assets/images/svg/right.svg" />
                         </div>
                     </div>
                     <div class="flex">
-                        <div class="order_status">
+                        <!-- <div class="order_status">
                             <div class="info">Order No: ${lastOrder["order_no"]}</div>
                             <div class="info">${lastOrder["status"]}${lastOrder["delivery_date"] ? " &nbsp;|&nbsp; Delivery On: " : ""}${lastOrder["delivery_date"]}</div>
+                        </div> -->
+                        <div class="order_status">
+                            <div class="info"><span class="light-colored">Order No:</span> <span class="bold">${lastOrder["order_no"]}</span></div>
+                            <div class="info"><span class="light-colored">Status:</span> <span class="bold">${lastOrder["status"]}</span></div>
+                        </div>
+                        <div class="order_status">
+                            <div class="info"><span class="light-colored">Order No:</span> <span class="bold">${lastOrder["order_no"]}</span></div>
+                            <div class="info"><span class="light-colored">Status:</span> <span class="bold">${lastOrder["status"]}</span></div>
                         </div>
                         <div class="order_on_date">
                             <div class="info">Ordered On:</div>
@@ -328,7 +336,7 @@ function loadBrandSelectionUI(data) {
                     <div class="count_wrapper hide"></div>
                 </div>
             </div>
-            <div class="sub_detail"><strong>Start:</strong> ${data["start_date"]} <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> <strong>End:</strong> ${data["last_date"]}</div>
+            <div class="sub_detail"><span class="bold highlight">Start:</span> ${data["start_date"]} <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> <span class="bold highlight">End:</span> ${data["last_date"]}</div>
             ${loadProgressCards(data["plan_progress"])}
         </div> 
         <div class="bottom">

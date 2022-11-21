@@ -3,12 +3,12 @@ function loadPlanProgress(data, basicProgress, hideSelectedProgress) {
     $("#progress_plan_main").empty();
     $("#progress_plan_main").prepend(`
         <div class="title">
-            <div class="name">${data["title"]}</div>
+            <div class="name highlight">${data["title"]}</div>
             <div class="arrow calendar">
-                <span>
+                <!-- <span>
                     <img src="/gsk/assets/images/svg/calendar.svg" />
-                </span>
-                Last Date: ${data["last_date"]}
+                </span> -->
+                <p style="color: #f36633;">End Date:&nbsp;&nbsp;</p> ${data["last_date"]}
             </div>
         </div>
         <div id="plan_items"></div>
@@ -26,7 +26,7 @@ function loadProgressCards(data, detailed, hideAdd) {
             <div class="progress_card ${detailed ? "transparent" : ""}">
                 <div class="progress_plan">
                     <div class="grouped">
-                        ${getProductsProgress(item, detailed, hideAdd, false, "#959595")}
+                        ${getProductsProgress(item, detailed, hideAdd, false, "#3f3f3f")}
                         <div class="quantity_inc">
                             <i class="fa fa-plus-circle" aria-hidden="true"></i>
                         </div>
@@ -136,8 +136,12 @@ function getProductsProgress(item, detailed, hideAdd, basicProgress, colorscheme
             `
                 <label style="font-size: 12px;">${parseInt(item["purchased"]) + parseInt(item["selected"])}</label>
                 <div class="progressbar_wrapper addproduct" skudata=${`${item["sku"]}`} >
-                    <div class="main reset" style="cursor: pointer;">
+                    <!--<div class="main reset" style="cursor: pointer;">
                         <img src="/gsk/assets/images/svg/plus.svg" class="icon_add"/>
+                    </div>-->
+                    <div class="main reset rounded_btn">
+                        <div class="inner">
+                        </div>
                     </div>
                 </div>
             `
@@ -174,7 +178,7 @@ function getProductsProgress(item, detailed, hideAdd, basicProgress, colorscheme
                 </div>
                 ${detailed ? getProgressHeaderFooterLabels(item, "footer") : ""}
             </div>
-            <div class="wrapper_brand_progress" style="width: ${detailed ? '10' : basicProgress ? '0' : '10'}%; padding-left: ${hideAdd ? "0px" : basicProgress ? '0px' : "5%"}; font-size: 12px;">
+            <div class="wrapper_brand_progress" style="width: ${detailed ? '10' : basicProgress ? '0' : '10'}%; padding-left: ${hideAdd ? "0px" : basicProgress ? '0px' : "4%"}; font-size: 12px;">
                 ${hideAdd ? `` : addBtn}
             </div>
         </div>
