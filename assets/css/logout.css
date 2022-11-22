@@ -46,12 +46,19 @@
 
 .modal_footer {
     padding: 15px;
-    text-align: center;
+    text-align: right;
     border-top: 1px solid #e5e5e5;
 }
 
-.modal_footer button {
+.modal_footer button:first-child {
     background: #F36633;
+}
+
+.modal_footer button:last-child {
+    background: #959595;
+}
+
+.modal_footer button {
     outline: 0;
     padding: 0 20px;
     border: none;

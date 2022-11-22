@@ -476,7 +476,7 @@ function addnewOrder(data, currentSku) {
                 </div>
                 <div class="accordion-item-body parent opened orderbrandselection">
                     <div class="accordion-item-body-content" style="max-height: 270px; overflow-y: auto;">
-                        <div class="date-picker-value" id="dpicker-${currentSku}">
+                        <div class="date-picker-value" id="dpicker-${data["sku"]}">
                             ${showDatePicker()}
                         </div>
                         <table class="accordian table">
@@ -495,8 +495,8 @@ function addnewOrder(data, currentSku) {
     const endDate = getLocalDataForDate['last_date'];
     const minDate = `${getMonthName( new Date(startDate))} ${new Date(startDate).getDate()}, ${String(new Date(startDate).getFullYear()).substring(2)}`;
     const maxDate = `${getMonthName( new Date(endDate))} ${new Date(endDate).getDate()}, ${String(new Date(endDate).getFullYear()).substring(2)}`;
-    $('input[id$=tbDate]').datepicker({ dateFormat: 'M dd, y', minDate: minDate, maxDate: maxDate });
-    $('input[id$=tbDate]').datepicker("setDate", "today");
+    $(`#dpicker-${data["sku"]} input[id$=tbDate]`).datepicker({ dateFormat: 'M dd, y', minDate: minDate, maxDate: maxDate });
+    $(`#dpicker-${data["sku"]} input[id$=tbDate]`).datepicker("setDate", data["ordered_date"] ? data["ordered_date"] : "today");
 
     data["product_details"].map((productData, index) => {
         let uuid = create_UUID();
@@ -568,8 +568,8 @@ function addnewOrder(data, currentSku) {
         }
     });
 
-    $('input[id$=tbDate]').datepicker({ dateFormat: 'M dd, y', minDate: 0 });
-    $('input[id$=tbDate]').datepicker("setDate", "today");
+    // $('input[id$=tbDate]').datepicker({ dateFormat: 'M dd, y', minDate: 0 });
+    // $('input[id$=tbDate]').datepicker("setDate", "today");
 }
 
 function addnewOrderBrand(data, currentSku, skulevel) {
@@ -581,7 +581,7 @@ function addnewOrderBrand(data, currentSku, skulevel) {
                 <div class="accordion-item-header orderdetail active">${data["account_no"]}</div>
                 <div class="accordion-item-body parent opened orderbrandselection">
                     <div class="accordion-item-body-content" style="max-height: 270px; overflow-y: auto;">
-                        <div class="date-picker-value">
+                        <div class="date-picker-value" id="dpicker-${data["sku"]}>
                             ${showDatePicker()}
                         </div>
                         
@@ -601,8 +601,8 @@ function addnewOrderBrand(data, currentSku, skulevel) {
     const endDate = getLocalDataForDate['last_date'];
     const minDate = `${getMonthName( new Date(startDate))} ${new Date(startDate).getDate()}, ${String(new Date(startDate).getFullYear()).substring(2)}`;
     const maxDate = `${getMonthName( new Date(endDate))} ${new Date(endDate).getDate()}, ${String(new Date(endDate).getFullYear()).substring(2)}`;
-    $('input[id$=tbDate]').datepicker({ dateFormat: 'M dd, y', minDate: minDate, maxDate: maxDate });
-    $('input[id$=tbDate]').datepicker("setDate", "today");
+    $(`#dpicker-${data["sku"]} input[id$=tbDate]`).datepicker({ dateFormat: 'M dd, y', minDate: minDate, maxDate: maxDate });
+    $(`#dpicker-${data["sku"]} input[id$=tbDate]`).datepicker("setDate", data["ordered_date"] ? data["ordered_date"] : "today");
 
     data["product_details"].map((productData, index) => {
         let uuid = create_UUID();
@@ -692,8 +692,8 @@ function addnewOrderBrand(data, currentSku, skulevel) {
         }
     });
 
-    $('input[id$=tbDate]').datepicker({ dateFormat: 'M dd, y', minDate: 0 });
-    $('input[id$=tbDate]').datepicker("setDate", "today");
+    // $('input[id$=tbDate]').datepicker({ dateFormat: 'M dd, y', minDate: 0 });
+    // $('input[id$=tbDate]').datepicker("setDate", "today");
 }
 
 function updateCounter(counterInput, type, currentSku, skulevel, brandData) {
@@ -742,6 +742,7 @@ function updateCounter(counterInput, type, currentSku, skulevel, brandData) {
                         }
                         if(parseStoredData["available_orders"]["orders"][mainIndex]["sku"] === parentSkuData) {
                             if(parseStoredData["available_orders"]["orders"][mainIndex]["product_details"][index]["sku"] === skuData) {
+                                parseStoredData["available_orders"]["orders"][mainIndex]["ordered_date"] = order["ordered_date"];
                                 parseStoredData["available_orders"]["orders"][mainIndex]["product_details"][index] = product;
                             }
                         }
@@ -750,6 +751,7 @@ function updateCounter(counterInput, type, currentSku, skulevel, brandData) {
                     }
                 });
                 if(window.wholesalerAccountData[mainIndex]["sku"] === parentSkuData) {
+                    window.wholesalerAccountData[mainIndex]["ordered_date"] = parseStoredData["new_orders"]["orders"][mainIndex]["ordered_date"];
                     window.wholesalerAccountData[mainIndex]["product_details"] = parseStoredData["new_orders"]["orders"][mainIndex]["product_details"];
                 }
             }

@@ -52,7 +52,6 @@ function injectDynamicCssToParent() {
 
 
 window.addEventListener('message', function (eventData) {
-    console.log(eventData, 'eventData@@@');
     let parsedData = JSON.parse(eventData.data);
 
     console.log("parsedData", parsedData)
