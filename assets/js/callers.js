@@ -374,4 +374,12 @@ window.addEventListener('message', function (eventData) {
         ToApp("show-brand-detailing", data);
     }
 
+    if (parsedEventData.event_code === "bot-reloaded" && parsedEventData.data) {
+        let eventName = parsedEventData.event_code;
+        let data = parsedEventData.data;
+        console.log("eventName---", eventName);
+        console.log('refreshed local storage data in caller.js',data);
+        ToApp("get-data-on-refresh", data);
+    }
+
 });

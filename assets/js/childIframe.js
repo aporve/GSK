@@ -140,6 +140,17 @@ window.addEventListener('message', function (eventData) {
         console.log('Event Data---',data);
     }
 
+    if (parsedEventData.event_code === "bot-reloaded" && parsedEventData.data) {
+        document.querySelector("iframe").contentWindow.postMessage(JSON.stringify({
+            event_code: 'bot-reloaded',                                                // added new event name
+            data: parsedEventData.data
+        }), '*');
+        let eventName = parsedEventData.event_code;
+        let data = parsedEventData.data;
+        console.log("eventName---", eventName);
+        console.log('refreshed local storage data in childIframe',data);
+    }
+
 
 
 

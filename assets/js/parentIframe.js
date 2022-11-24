@@ -142,7 +142,7 @@ window.addEventListener('message', function (eventData) {
     if (parsedData?.event_code == 'custom-event' && parsedData?.data?.code == "bot-reloaded") {
         console.log("bot-reloaded");
         let data = localStorage.getItem("updated-data")
-        console.log('refreshed local storage data', data);
+        console.log('refreshed local storage data in parentIframe', data);
         document.getElementById('ymIframe').contentWindow.postMessage(JSON.stringify({
             event_code: 'bot-reloaded',
             data:  data
