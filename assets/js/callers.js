@@ -218,7 +218,7 @@ function ToBot(eventName, data) {
             updatedData["currentScreen"] = window.currentScreen || "";
             window.parent.postMessage(JSON.stringify({
                 event_code: eventName,
-                data: data
+                data: updatedData
             }), '*');
             break;
         default:
