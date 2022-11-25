@@ -216,9 +216,10 @@ function ToBot(eventName, data) {
         case "update-data-on-refresh":
             let updatedData = JSON.parse(data);
             updatedData["currentScreen"] = window.currentScreen || "";
+            console.log('--> Updated data on refresh', updatedData);
             window.parent.postMessage(JSON.stringify({
                 event_code: eventName,
-                data: updatedData
+                data: JSON.stringify(updatedData)
             }), '*');
             break;
         default:
