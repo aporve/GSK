@@ -134,7 +134,7 @@ function getAccordianAccounts(data, rebates) {
         if(rebates) {
             return `
                 <div class="edit switchWholesalerAccount" style="height: auto; width: 16px; margin-right: 10px;" skudata=${data["sku"]}>
-                    <img src="/assets/images/svg/edit.svg" />
+                    <img src="/gsk/assets/images/svg/edit.svg" />
                 </div>
             `
         } 
