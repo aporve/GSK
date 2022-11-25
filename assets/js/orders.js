@@ -307,6 +307,12 @@ function loadUserWelcomeUI(data) {
         $("#last_order_history").append(`<div class="progress_plan" id="progress_plan_main"></div>`);
     }
 
+    $("#last_order_history").mCustomScrollbar({
+        theme: "dark-thin",
+        scrollButtons: { enable: true },
+        autoHideScrollbar: true
+    });
+
     $(".place_new_order").click(function (e) {
         e.stopPropagation();
         e.stopImmediatePropagation();
@@ -348,7 +354,23 @@ function loadBrandSelectionUI(data) {
         </div>
     `);
 
-    let total = calculateSumAmount(window.cartData);
+    $(".choosebrands").mCustomScrollbar({
+        theme: "dark-thin",
+        scrollButtons: { enable: true },
+        autoHideScrollbar: true
+    });
+
+    // let total = calculateSumAmount(window.cartData);
+    
+    let parseData = getParsedData();
+    let total = 0;
+    parseData && parseData?.["new_orders"] && parseData?.["new_orders"]?.["orders"] && parseData?.["new_orders"]?.["orders"].map((ordr, index) => {
+        ordr["product_details"].map(product => {
+            let quantity = product["quantity"] ? Number(product["quantity"]) : 0;
+            total = total + quantity;
+        });
+    });
+
     if (total) {
         $(".count_wrapper").removeClass("hide");
         $(".place_order.checkout").parent().removeClass("disabled");
