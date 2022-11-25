@@ -386,6 +386,7 @@ window.addEventListener('message', function (eventData) {
         let data = parsedEventData.data;
         console.log("eventName---", eventName);
         console.log('refreshed local storage data in caller.js',data);
+        console.log('reload parse data',JSON.parse(data))
         ToApp("get-data-on-refresh", data);
     }
 
