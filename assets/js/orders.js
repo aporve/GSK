@@ -354,11 +354,11 @@ function loadBrandSelectionUI(data) {
         </div>
     `);
 
-    $(".choosebrands").mCustomScrollbar({
+    /* $(".choosebrands").mCustomScrollbar({
         theme: "dark-thin",
         scrollButtons: { enable: true },
         autoHideScrollbar: true
-    });
+    }); */
 
     // let total = calculateSumAmount(window.cartData);
     
