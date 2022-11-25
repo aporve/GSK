@@ -113,18 +113,18 @@ function loadOrderCart(data) {
         });
     }
 
-    $(".order_details_container.choosebrands").mCustomScrollbar({
+    /* $(".order_details_container.choosebrands").mCustomScrollbar({
         theme: "dark-thin",
         scrollButtons: { enable: false },
         autoHideScrollbar: true
-    });
+    }); */
 
     
-    $(".accordion-item-body-content").mCustomScrollbar({
+    /* $(".accordion-item-body-content").mCustomScrollbar({
         theme: "dark-thin",
         scrollButtons: { enable: false },
         autoHideScrollbar: true
-    });
+    }); */
 }
 
 function getAccordianAccounts(data, rebates) {
@@ -292,18 +292,18 @@ function loadOrderFinalCart(data) {
         }
     });
 
-    $(".order_details_container.choosebrands").mCustomScrollbar({
+    /* $(".order_details_container.choosebrands").mCustomScrollbar({
         theme: "dark-thin",
         scrollButtons: { enable: true },
         autoHideScrollbar: true
-    });
+    }); */
 
     
-    $(".accordion-item-body-content").mCustomScrollbar({
+    /* $(".accordion-item-body-content").mCustomScrollbar({
         theme: "dark-thin",
         scrollButtons: { enable: false },
         autoHideScrollbar: true
-    });
+    }); */
 }
 
 function goBack() {

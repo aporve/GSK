@@ -307,11 +307,11 @@ function loadUserWelcomeUI(data) {
         $("#last_order_history").append(`<div class="progress_plan" id="progress_plan_main"></div>`);
     }
 
-    $("#last_order_history").mCustomScrollbar({
+    /* $("#last_order_history").mCustomScrollbar({
         theme: "dark-thin",
         scrollButtons: { enable: true },
         autoHideScrollbar: true
-    });
+    }); */
 
     $(".place_new_order").click(function (e) {
         e.stopPropagation();

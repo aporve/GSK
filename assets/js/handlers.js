@@ -194,11 +194,11 @@ function showSkuLevelDetailsBrand(data, currentSku) {
         });
     }
 
-    $(".accordion-item-body-content").mCustomScrollbar({
+    /* $(".accordion-item-body-content").mCustomScrollbar({
         theme: "dark-thin",
         scrollButtons: { enable: false },
         autoHideScrollbar: true
-    });
+    }); */
 }
 
 function showBrandLevelDetails(data, currentSku) {
@@ -429,11 +429,11 @@ function showBrandLevelDetails(data, currentSku) {
        
     }
 
-    $(".order_details_container.choosebrands").mCustomScrollbar({
+    /* $(".order_details_container.choosebrands").mCustomScrollbar({
         theme: "dark-thin",
         scrollButtons: { enable: true },
         autoHideScrollbar: true
-    });
+    }); */
 }
 
 function addWholeSalerAccordionSku(data, orderData, currentSku) {
@@ -594,11 +594,11 @@ function addnewOrder(data, currentSku) {
     });
 
 
-    $(".accordion-item-body-content").mCustomScrollbar({
+    /* $(".accordion-item-body-content").mCustomScrollbar({
         theme: "dark-thin",
         scrollButtons: { enable: false },
         autoHideScrollbar: true
-    });
+    }); */
 
     // $('input[id$=tbDate]').datepicker({ dateFormat: 'M dd, y', minDate: 0 });
     // $('input[id$=tbDate]').datepicker("setDate", "today");
@@ -725,11 +725,11 @@ function addnewOrderBrand(data, currentSku, skulevel) {
     });
 
 
-    $(".accordion-item-body-content").mCustomScrollbar({
+    /* $(".accordion-item-body-content").mCustomScrollbar({
         theme: "dark-thin",
         scrollButtons: { enable: false },
         autoHideScrollbar: true
-    });
+    }); */
 
     // $('input[id$=tbDate]').datepicker({ dateFormat: 'M dd, y', minDate: 0 });
     // $('input[id$=tbDate]').datepicker("setDate", "today");
