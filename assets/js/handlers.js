@@ -110,7 +110,6 @@ function showSkuLevelDetailsBrand(data, currentSku) {
 
                 });
             });
-            
             window.dataStore["plan_progress"]["brands"].map(brand => {
                 if(brand["sku"] === currentSku) {
                     brand["selected"] = totalSelectedQuantity;
