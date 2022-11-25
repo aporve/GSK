@@ -7,15 +7,20 @@
         document.getElementById('player').style.width = '0px'
         document.querySelector('#chatContainer').insertAdjacentHTML(
             'afterbegin',
-            `
-                <div class="mod-head-side-bar-container">
-                    <div class="overflow-container-sidebar">
-                        <ul class="sidebar-wrapper">
-                            <iframe id='iframe' style="width:100%; height:100%; border: none;"  src="https://aporve.github.io/gsk/index.html"></iframe>
-                        </ul>
-                    </div>
-                </div>
-           `
+            `<div class="mod-head-side-bar-container">
+            <div class="overflow-container-sidebar">
+                <ul class="sidebar-wrapper">
+                    <iframe id='iframe' style="width:100%; height:100%; border: none;"  src="https://aporve.github.io/gsk/index.html"></iframe>
+                </ul>
+            </div>
+            <div class="overflow-container-header">
+                <ul class="header-wrapper">
+                  <div style="width: 100%; height:100%">
+                    <img src="https://cdn.yellowmessenger.com/0y3moqbykQWK1669200810434.jpg" alt="GSK Image" style="width: 100%; height:100%">
+                  </div>
+                </ul>
+            </div>
+            </div> `
         );
     }
     catch (e) {
