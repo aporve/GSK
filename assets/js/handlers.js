@@ -291,6 +291,30 @@ function showBrandLevelDetails(data, currentSku) {
         e.stopPropagation();
         e.stopImmediatePropagation();
         let parseData = getParsedData();
+        window.wholesalerAccountData && window.wholesalerAccountData.map((whData, index) => {
+            if(!window.cartData[whData["sku"]]) {
+                window.wholesalerAccountData.splice(index, 1);
+            } else {
+                parseData && parseData?.["new_orders"]?.["orders"] && parseData?.["new_orders"]?.["orders"].map((pdo, index) => {
+                    let quant = 0;
+                    pdo["product_details"].map((pd , ind) => {
+                        if(pd["brand"] === currentSku) {
+                            quant = quant + Number(pd["units"]);
+                            if(window.cartData[pdo["sku"]]) {
+                                if(!Number(pd["units"])) {
+                                    delete window.cartData[pdo["sku"]][pd["sku"]];
+                                 }
+                            }
+                        }
+                    });
+                    if(!quant) {
+                        delete window.cartData[pdo["sku"]];
+                    }
+                });
+            }
+        });
+        parseData["new_orders"]["orders"] = window.wholesalerAccountData;
+        saveParsedData(parseData);
         loadBrandSelectionUI(parseData);
         ToBot("ordercart-back", parseData);
     });
@@ -373,7 +397,6 @@ function showBrandLevelDetails(data, currentSku) {
             let shouldWholeSalerAccountAdd = false;
             if(!window.orderCartData.includes(filteredBrand[0]["sku"]) ) {
                 window.orderCartData.push(filteredBrand[0]["sku"]);
-                console.log("window.wholesalerAccountData --> ", window.wholesalerAccountData);
                 window.wholesalerAccountData && window.wholesalerAccountData.map(whData => {
                     if (whData["sku"] !== orderData["sku"]) {
                         window.wholesalerAccountData.push({...orderData, "brandsku": `${orderData["sku"]}-${filteredBrand[0]["sku"]}`});
@@ -814,7 +837,19 @@ function updateCounter(counterInput, type, currentSku, skulevel, brandData) {
             }
         }
 
-        let total = calculateSumAmount(totalCalculationTemporary);
+        let total = 0;
+        if(skulevel) {
+            total = calculateSumAmount(totalCalculationTemporary);
+        } else {
+            parseStoredData && parseStoredData?.["new_orders"] && parseStoredData?.["new_orders"]?.["orders"] && parseStoredData?.["new_orders"]?.["orders"].map((ordr, index) => {
+                ordr["product_details"].map(product => {
+                    if(currentSku === product["brand"]) {
+                        let quantity = product["quantity"] ? Number(product["quantity"]) : 0;
+                        total = total + quantity;
+                    }
+                });
+            });
+        }
 
         parseStoredData && parseStoredData["plan_progress"] && parseStoredData["plan_progress"]["brands"].map(brandDataItem => {
             if (brandDataItem["sku"] === parseStoredData["selected_brand"]) {
