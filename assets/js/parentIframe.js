@@ -255,22 +255,22 @@ window.addEventListener('message', function (eventData) {
         return;
     }
 
-    if (parsedData?.event_code == ' back-brand-select') {
+    if (parsedData?.event_code == 'back-brand-select') {
         console.log("\n\n\n <---  back-brand-select event in parent iframe ---> \n\n\n", parsedData);
         window.frames.ymIframe.chat.send({
             event: {
-                code: " back-brand-select",
+                code: "back-brand-select",
                 data: parsedData
             }
         }, true);
         return;
     }
 
-    if (parsedData?.event_code == ' ordercart-back') {
+    if (parsedData?.event_code == 'ordercart-back') {
         console.log("\n\n\n <---  ordercart-back event in parent iframe ---> \n\n\n", parsedData);
         window.frames.ymIframe.chat.send({
             event: {
-                code: " ordercart-back",
+                code: "ordercart-back",
                 data: parsedData
             }
         }, true);
