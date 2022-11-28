@@ -235,7 +235,7 @@ window.addEventListener('message', function (eventData) {
     if(parsedEventData.event_code === "back-brand-select") {
         // console.log('back-brand-select Data in child Iframe~~~>>', parsedEventData.data)
         parent.postMessage(JSON.stringify({
-            event_code: 'cancel-order-total-invoice',
+            event_code: 'back-brand-select',
             data: parsedEventData.data
         }), '*');
     }
@@ -243,7 +243,7 @@ window.addEventListener('message', function (eventData) {
     if(parsedEventData.event_code === "ordercart-back") {
         // console.log('ordercart-back Data in child Iframe~~~>>', parsedEventData.data)
         parent.postMessage(JSON.stringify({
-            event_code: 'cancel-order-total-invoice',
+            event_code: 'ordercart-back',
             data: parsedEventData.data
         }), '*');
     }
