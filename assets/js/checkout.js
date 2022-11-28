@@ -36,7 +36,8 @@ function loadOrderCart(data) {
         e.stopPropagation();
         e.stopImmediatePropagation();
         let parseData = JSON.parse(localStorage.getItem("data"));
-        showBrandLevelDetails(parseData, parseData["selected_brand"]);
+        ToApp("choosebrands-screen", parseData);
+        // showBrandLevelDetails(parseData, parseData["selected_brand"]);
     });
 
     $("#cancel").click(function (e) {
@@ -219,11 +220,11 @@ function getAccordianAccountsData(data, rebates) {
                 </td>
             </tr>
             <tr class="info_row borderBottom">
-                <td class="info_data" colspan="1">£ ${item["price"]}</td>
+                    <td class="info_data" colspan="1">£ ${item["price"] || "-"}</td>
                 <td class="info_data" colspan="1">${item["quantity"] || item["units"]}</td>
-                    <td class="info_data" colspan="1">${eligibleFreeGoods || +item["free_goods"]}</td>
-                    <td class="info_data" colspan="1">${item["discount"]}</td>
-                    <td class="info_data" colspan="1">${item["payterm"]} D</td>
+                    <td class="info_data" colspan="1">${item["free_goods"] || "-"}</td>
+                    <td class="info_data" colspan="1">${item["discount"] || "-"}</td>
+                    <td class="info_data" colspan="1">${item["payterm"] || "-"} D</td>
                 </tr>
             `
         }
