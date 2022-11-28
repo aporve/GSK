@@ -897,7 +897,7 @@ function updateCounter(counterInput, type, currentSku, skulevel, brandData) {
             }
         });
 
-        console.log("parseStoredData --> ", parseStoredData);
+        // console.log("parseStoredData --> ", parseStoredData);
 
         let totalCalculationTemporary = JSON.parse(JSON.stringify({
             [parentSkuData]: {
