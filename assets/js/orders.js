@@ -107,6 +107,13 @@ function loadUserWelcomeUI(data) {
     
             <div class="progress_plan" id="progress_plan_main"></div>
         `);
+
+        $("#backbtnOh").click(function (e) {
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+            document.getElementById("tab21").click();
+            ToBot("back-on-orderhistory", {});
+        });
     
         $(".back_button").click(function (e) {
             e.stopPropagation();

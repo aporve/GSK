@@ -216,10 +216,18 @@ function ToBot(eventName, data) {
         case "update-data-on-refresh":
             let updatedData = JSON.parse(data);
             updatedData["currentScreen"] = window.currentScreen || "";
-            console.log('--> Updated data on refresh', updatedData);
             window.parent.postMessage(JSON.stringify({
                 event_code: eventName,
-                data: JSON.stringify(updatedData)
+                data: updatedData
+            }), '*');
+            if(window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                ToApp("get-data-on-refresh", updatedData);
+            }
+            break;
+        case "back-on-orderhistory":
+            window.parent.postMessage(JSON.stringify({
+                event_code: eventName,
+                data: data
             }), '*');
             break;
         default:
