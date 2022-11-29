@@ -218,7 +218,7 @@ function ToBot(eventName, data) {
             updatedData["currentScreen"] = window.currentScreen || "";
             window.parent.postMessage(JSON.stringify({
                 event_code: eventName,
-                data: updatedData
+                data: JSON.stringify(updatedData)
             }), '*');
             if(window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
                 ToApp("get-data-on-refresh", updatedData);
