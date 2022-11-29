@@ -505,7 +505,7 @@ function showBrandLevelDetails(data, currentSku) {
                 ordr["product_details"].map(product => {
                     let parentSku = window.cartData[ordr["sku"]];
                     let skuproduct = parentSku[product["sku"]];
-                    if(window[`shouldNewWholeSalerAccountAdd-${index}`] && skuproduct && (product["brand"] === currentSku && ordr["brandsku"].includes(currentSku))) {
+                    if(window[`shouldNewWholeSalerAccountAdd-${index}`] && skuproduct && (product["brand"] === currentSku)) {
                         addnewOrder(ordr, currentSku);
                         window[`shouldNewWholeSalerAccountAdd-${index}`] = false;
                     }

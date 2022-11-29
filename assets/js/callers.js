@@ -263,6 +263,7 @@ function ToApp(eventName, data, orgData) {
             loadClientList(data);
             break;
         case "ordercart-screen":
+            localStorage.setItem("data", JSON.stringify(data));
             loadOrderCart(data);
             break;
         case "ordercart-final-screen":
