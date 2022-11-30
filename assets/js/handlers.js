@@ -253,11 +253,11 @@ function showSkuLevelDetailsBrand(data, currentSku) {
        
     }
 
-    $("#order_details_container_choosebrands_skulevel").mCustomScrollbar({
+    /* $("#order_details_container_choosebrands_skulevel").mCustomScrollbar({
         theme: "dark-thin",
         scrollButtons: { enable: false },
         autoHideScrollbar: true
-    });
+    }); */
 }
 
 function showBrandLevelDetails(data, currentSku, requestType) {
@@ -538,11 +538,11 @@ function showBrandLevelDetails(data, currentSku, requestType) {
        
     }
 
-    $("#order_details_container_choosebrands_brandlevel").mCustomScrollbar({
+    /* $("#order_details_container_choosebrands_brandlevel").mCustomScrollbar({
         theme: "dark-thin",
         scrollButtons: { enable: true },
         autoHideScrollbar: true
-    });
+    }); */
 }
 
 function addWholeSalerAccordionSku(data, orderData, currentSku) {

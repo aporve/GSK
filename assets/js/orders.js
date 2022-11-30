@@ -325,11 +325,11 @@ function loadUserWelcomeUI(data) {
         ToBot("place-new-order", {});
     });
 
-    $("#last_order_history").mCustomScrollbar({
+    /* $("#last_order_history").mCustomScrollbar({
         theme: "dark-thin",
         scrollButtons: { enable: true },
         autoHideScrollbar: true
-    });
+    }); */
 }
 
 function loadBrandSelectionUI(data) {
@@ -360,11 +360,11 @@ function loadBrandSelectionUI(data) {
         </div>
     `);
 
-    $("#loadBrandSelectionUI").mCustomScrollbar({
+    /* $("#loadBrandSelectionUI").mCustomScrollbar({
         theme: "dark-thin",
         scrollButtons: { enable: true },
         autoHideScrollbar: true
-    });
+    }); */
 
     // let total = calculateSumAmount(window.cartData);
     
