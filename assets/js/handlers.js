@@ -914,7 +914,7 @@ function addnewOrderBrand(data, currentSku, skulevel) {
                 <div class="accordion-item-header orderdetail active">
                     <div class="flex">
                         <div class="edit swapWholesalerAccount" style="height: auto; width: 16px; margin-right: 10px;" skudata=${data["sku"]}>
-                            <img src="/assets/images/svg/edit.svg" />
+                            <img src="/gsk/assets/images/svg/edit.svg" />
                         </div>
                         ${data["account_no"]}
                     </div>
