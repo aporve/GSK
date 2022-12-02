@@ -231,16 +231,14 @@ function showSkuLevelDetailsBrand(data, currentSku) {
         }
     });
 
-    let parseData = getParsedData();
-
     if (window.wholesalerAccountData && window.wholesalerAccountData.length !== 0) {
         if(window.cartData && Object.keys(window.cartData).length !== 0) {
-            let parseData = getParsedData();
+            let parseData = Object.keys(window.dataStore).length !== 0 ? JSON.parse(JSON.stringify(window.dataStore)) : getParsedData();
             parseData && parseData?.["new_orders"] && parseData?.["new_orders"]?.["orders"] && parseData?.["new_orders"]?.["orders"].map((ordr, index) => {
                 window[`shouldNewWholeSalerAccountAdd-${index}`] = true;
                 ordr["product_details"].map(product => {
                     let parentSku = window.cartData[ordr["sku"]];
-                    let skuproduct = parentSku[product["sku"]];
+                    let skuproduct = parentSku?.[product?.["sku"]];
                     if(window[`shouldNewWholeSalerAccountAdd-${index}`] && skuproduct && (product["brand"] === currentSku && ordr["brandsku"].includes(currentSku))) {
                         addnewOrderBrand(ordr, currentSku, true);
                         window[`shouldNewWholeSalerAccountAdd-${index}`] = false;
@@ -696,7 +694,7 @@ function addnewOrder(data, currentSku) {
     `);
 
     const getLocalDataForDate = getParsedData();
-    const startDate = getLocalDataForDate['start_date'];
+    const startDate = new Date();
     const endDate = getLocalDataForDate['last_date'];
     const minDate = `${getMonthName( new Date(startDate))} ${new Date(startDate).getDate()}, ${String(new Date(startDate).getFullYear()).substring(2)}`;
     const maxDate = `${getMonthName( new Date(endDate))} ${new Date(endDate).getDate()}, ${String(new Date(endDate).getFullYear()).substring(2)}`;
@@ -872,7 +870,7 @@ function addnewOrder(data, currentSku) {
                 addInputListener(`counter_input_wrapper`);
             // }
         }
-        
+
         $(`.counter__minus.key${uuid}`).click(function (e) {
             updateCounter(this, "minus", currentSku, false, data);
         });
@@ -880,6 +878,7 @@ function addnewOrder(data, currentSku) {
         $(`.counter__plus.key${uuid}`).click(function (e) {
             updateCounter(this, "add", currentSku, false, data);
         });
+
     });
 
     $(".accordion-item-header.orderdetail").click(function (e) {
@@ -912,7 +911,14 @@ function addnewOrderBrand(data, currentSku, skulevel) {
     $(".new_orders").prepend(`
         <div class="accordion">
             <div class="accordion-item">
-                <div class="accordion-item-header orderdetail active">${data["account_no"]}</div>
+                <div class="accordion-item-header orderdetail active">
+                    <div class="flex">
+                        <div class="edit swapWholesalerAccount" style="height: auto; width: 16px; margin-right: 10px;" skudata=${data["sku"]}>
+                            <img src="/assets/images/svg/edit.svg" />
+                        </div>
+                        ${data["account_no"]}
+                    </div>
+                </div>
                 <div class="accordion-item-body parent opened orderbrandselection">
                     <div class="accordion-item-body-content" style="max-height: 270px; overflow-y: auto;">
                         <div class="date-picker-value" id="dpicker-${data['sku']}">
@@ -931,12 +937,129 @@ function addnewOrderBrand(data, currentSku, skulevel) {
     `);
 
     const getLocalDataForDate = getParsedData();
-    const startDate = getLocalDataForDate['start_date'];
+    const startDate = new Date();
     const endDate = getLocalDataForDate['last_date'];
     const minDate = `${getMonthName( new Date(startDate))} ${new Date(startDate).getDate()}, ${String(new Date(startDate).getFullYear()).substring(2)}`;
     const maxDate = `${getMonthName( new Date(endDate))} ${new Date(endDate).getDate()}, ${String(new Date(endDate).getFullYear()).substring(2)}`;
     $(`#dpicker-${data["sku"]} input[id$=tbDate]`).datepicker({ dateFormat: 'M dd, y', minDate: minDate, maxDate: maxDate });
     $(`#dpicker-${data["sku"]} input[id$=tbDate]`).datepicker("setDate", data["ordered_date"] ? data["ordered_date"] : "today");
+
+    $(".swapWholesalerAccount").click(function (e) {
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        $(".account_list").empty();
+        $(".account_select").removeClass("hide");
+        let swapSkudata = $(this).attr("skudata");
+        console.log("swapSkudata --> ", swapSkudata);
+
+        let skuAcc = [];
+        skuAcc = window.wholesalerAccountData && window.wholesalerAccountData.map((whData, index) => {
+            return whData["sku"];
+        });
+
+        if(skuAcc.length === 0 || !skuAcc) {
+            $(".account_select").addClass("hide");
+            showSnackbar(true, "All Acc Selected!!!");
+        } else {
+            if(window.wholesalerAccountData.length ===  window.dataStore["available_orders"]["orders"].length) {
+                $(".account_select").addClass("hide");
+                showSnackbar(true, "All Acc Selected!!!");
+            }
+        }
+
+        getLocalDataForDate && getLocalDataForDate["available_orders"] && getLocalDataForDate["available_orders"]["orders"] && getLocalDataForDate["available_orders"]["orders"].map((order, index) => {
+            window.wholesalerAccountData && window.wholesalerAccountData.map((whData, index) => {
+                if(!skuAcc.includes(order["sku"])) {
+                    $(".account_list").append(`<div class="item swap" skudata=${order["sku"]} swapSkudata=${swapSkudata}>${order["account_no"]}</div>`);
+                    attachAccountListListener();
+                }
+            });
+            
+        });
+    });
+
+    function attachAccountListListener() {
+        $(".swap").click(function (e) {
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+            $(".account_select").addClass("hide");
+            let currentElementData = $(this).attr("skudata");
+            let currentSwapElementData = $(this).attr("swapSkudata");
+            let filterSelectedData = getLocalDataForDate && getLocalDataForDate["available_orders"] && getLocalDataForDate["available_orders"]["orders"] && getLocalDataForDate["available_orders"]["orders"].filter(ord => ord["sku"] === currentElementData);
+            
+            let filterPrevSelectedData = window.dataStore && window.dataStore["new_orders"] && window.dataStore["new_orders"]["orders"] && window.dataStore["new_orders"]["orders"].filter(ord => ord["sku"] === currentSwapElementData);
+            console.log("filterPrevSelectedData --> ", filterPrevSelectedData);
+            
+            let skuAcc = [];
+            skuAcc = window.wholesalerAccountData && window.wholesalerAccountData.map((whData, index) => {
+                return whData["sku"];
+            });
+            console.log("skuAcc --> ", skuAcc);
+            
+            let brandsku = `${filterSelectedData[0]["sku"]}-${window.dataStore["selected_brand"]}`;
+            console.log("brandsku --> ", brandsku);
+
+            filterSelectedData[0]["brandsku"] = brandsku;
+            console.log("filterSelectedData --> ", filterSelectedData);
+
+            let mappedUnitData = filterSelectedData[0]["product_details"].map((selectedpd, index) => {
+                let pdsku = selectedpd["sku"];
+                console.log("pdsku --> ", pdsku);
+                selectedpd = filterPrevSelectedData[0]["product_details"][index];
+                selectedpd["sku"] = pdsku;
+                /* window.cartData = {
+                    ...window.cartData,
+                    [window.cartData[pdsku]]: {
+                        ...window.cartData[pdsku],
+                        [window.cartData[pdsku][selectedpd["sku"]]]: Number(selectedpd["units"]) ? Number(selectedpd["units"]): 0
+                    }
+                } */
+                if(Number(selectedpd["units"])) {
+                    if(!window.cartData[filterSelectedData[0]["sku"]]) {
+                        window.cartData[filterSelectedData[0]["sku"]]= {};
+                        window.cartData = {
+                            ...window.cartData,
+                            [filterSelectedData[0]["sku"]]: {
+                                ...window.cartData[filterSelectedData[0]["sku"]],
+                                [pdsku] : selectedpd["units"],
+                            }
+                        }
+                    }
+                    
+                }
+                return selectedpd;
+            });
+
+            console.log("window.cartdata --> ", window.cartData);
+            console.log("mappedUnitData --> ", mappedUnitData);
+            debugger;
+            filterSelectedData[0]["product_details"] = mappedUnitData;
+
+            window.wholesalerAccountData && window.wholesalerAccountData.map((whData, index) => {
+                if(!skuAcc.includes(filterSelectedData[0]["sku"])) {
+                    delete window.cartData[filterPrevSelectedData[0]["sku"]];
+                    window.wholesalerAccountData.splice(index, 1);
+                    window.wholesalerAccountData.push(filterSelectedData[0]);
+                }
+            });
+
+            let getStoredData = getParsedData();
+            
+            window.dataStore["available_orders"]["orders"] = getStoredData["available_orders"]["orders"];
+            window.dataStore["new_orders"]["orders"] = window.wholesalerAccountData;
+
+            let selectedBrand = window.dataStore["selected_brand"];
+            const filteredBrand = window.dataStore["plan_progress"]["brands"].filter(brand => brand["sku"] === selectedBrand);
+            const isBrandSku = filteredBrand[0]["isSku"];
+            isBrandSku ? showSkuLevelDetailsBrand(window.dataStore, selectedBrand, "swap") : showBrandLevelDetails(window.dataStore, selectedBrand, "swap");
+
+            /* let selectedBrand = window.dataStore["selected_brand"];
+            const filteredBrand = window.dataStore["plan_progress"]["brands"].filter(brand => brand["sku"] === selectedBrand);
+            const isBrandSku = filteredBrand[0]["isSku"];
+            isBrandSku ? showSkuLevelDetailsBrand(window.dataStore, selectedBrand, "swap") : showBrandLevelDetails(window.dataStore, selectedBrand, "swap"); */
+        });
+    }
+
 
     data["product_details"].map((productData, index) => {
         let uuid = create_UUID();

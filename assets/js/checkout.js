@@ -37,6 +37,7 @@ function loadOrderCart(data) {
         e.stopImmediatePropagation();
         let parseData = JSON.parse(localStorage.getItem("data"));
         ToApp("choosebrands-screen", parseData);
+        ToBot("checkout-add-brands", parseData);
         // showBrandLevelDetails(parseData, parseData["selected_brand"]);
     });
 
@@ -209,7 +210,7 @@ function getAccordianAccountsData(data, rebates) {
                 <td class="info_data" colspan="1">${item["quantity"] || item["units"]}</td>
                     <td class="info_data" colspan="1">${item["free_goods"] || "-"}</td>
                     <td class="info_data" colspan="1">${item["discount"] || "-"}</td>
-                    <td class="info_data" colspan="1">${item["payterm"] || "-"} D</td>
+                    <td class="info_data" colspan="1">${item["payterm"] ? (item["payterm"] + 'D') : "-"}</td>
                 </tr>
             `
         }
@@ -221,7 +222,7 @@ function getAccordianAccountsData(data, rebates) {
         let parseData = JSON.parse(localStorage.getItem("data"));
         let selectedBrand = $(this).attr("brand");
         // showBrandLevelDetails(parseData, selectedBrand);
-
+        ToBot("checkout-to-brand-detailing", parseData);
 
         const filteredBrand = parseData["plan_progress"]["brands"].filter(brand => brand["sku"] === selectedBrand);
         const isBrandSku = filteredBrand[0]["isSku"];
