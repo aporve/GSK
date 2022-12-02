@@ -196,29 +196,27 @@
 }
 
 .sub-block.initial.labeller::after {
-    counter-reset: x var(--label);
-    content: counter(x);
+    content: attr(labelvalue);
     position: absolute;
     right: -10%;
 }
 
 .sub-block.labeller::after {
-    counter-reset: x var(--label);
-    content: counter(x);
+    content: attr(labelvalue);
     position: absolute;
     right: -10%;
 }
 
 .sub-block.discount::after {
-    counter-reset: x var(--label);
-    content: counter(x)"\0025";
+    /* counter-reset: x var(--label);
+    content: counter(x)"\0025"; */
+    content: attr(labelvalue)"\0025";
     position: absolute;
     right: -10%;
 }
 
 .sub-block.freegoods::after {
-    counter-reset: x var(--label);
-    content: counter(x)"\002B";
+    content: "\002B"attr(labelvalue);
     position: absolute;
     right: -10%;
 }

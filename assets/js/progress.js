@@ -78,12 +78,12 @@ function getProgressHeaderFooterLabels(data, sourceContainer) {
                 let diff = Number(rangeData[index]["label"]) - Number(rangeData[index - 1]["label"]);
                 let blockWidthRatio = diff / Number(data["max_limit"]);
                 let blockWidthRatioPercent = blockWidthRatio * 100;
-                return `<div class="sub-block ${(type === "FINANCIAL" || !type) ? "discount" : ""} ${(type === "FREE_GOODS" || !type) ? "freegoods" : ""} ${isLabelReached ? 'highlight' : ''}" style="width: ${blockWidthRatioPercent}%;border-color: #fff; justify-content: right; --label: ${range['discount']};"></div>`;
+                return `<div labelvalue="${range['discount']}" class="sub-block ${(type === "FINANCIAL" || !type) ? "discount" : ""} ${(type === "FREE_GOODS" || !type) ? "freegoods" : ""} ${isLabelReached ? 'highlight' : ''}" style="width: ${blockWidthRatioPercent}%;border-color: #fff; justify-content: right;"></div>`;
             }
             let diff = Number(rangeData[index]["label"]) - Number(rangeData[index - 1]["label"]);
             let blockWidthRatio = diff / Number(data["max_limit"]);
             let blockWidthRatioPercent = blockWidthRatio * 100;
-            return `<div class="sub-block ${(type === "FINANCIAL" || !type) ? "discount" : ""} ${(type === "FREE_GOODS" || !type) ? "freegoods" : ""} ${isLabelReached ? 'highlight' : ''}" style="width: ${blockWidthRatioPercent}%;border-color: #fff; justify-content: right; --label: ${range['discount']};"></div>`;
+            return `<div labelvalue="${range['discount']}" class="sub-block ${(type === "FINANCIAL" || !type) ? "discount" : ""} ${(type === "FREE_GOODS" || !type) ? "freegoods" : ""} ${isLabelReached ? 'highlight' : ''}" style="width: ${blockWidthRatioPercent}%;border-color: #fff; justify-content: right;"></div>`;
         })
         return rangeDataDivs.join("");
     }
@@ -93,7 +93,7 @@ function getProgressHeaderFooterLabels(data, sourceContainer) {
             return `
                 <div class="detail_bar">
                     <div class="main">
-                        ${getRange(discount_range, data["offInvoiceDiscountType"])}
+                        ${getRange(discount_range, data["offInvoice_discount_execution"])}
                     </div>
                     ${sourceContainer === "header" ? '<div class="progress_header_label">Disc.</div>' : ""}
                     ${sourceContainer === "header" ? '<div class="progress_header_label right">Off <br/> Invoice</div>' : ""}
@@ -109,7 +109,7 @@ function getProgressHeaderFooterLabels(data, sourceContainer) {
             return `
                 <div class="detail_bar">
                     <div class="main">
-                        ${getRange(discount_range, data["onInvoiceDiscountType"])}
+                        ${getRange(discount_range, data["onInvoice_discount_execution"])}
                     </div>
                     ${sourceContainer === "header" ? '<div class="progress_header_label">Disc.</div>' : ""}
                     ${sourceContainer === "header" ? '<div class="progress_header_label right">On <br/> Invoice</div>' : ""}
@@ -150,18 +150,18 @@ function getProgressHeaderFooterLabels(data, sourceContainer) {
             let diff = Number(discount_range[index]["label"]) - 0;
             let blockWidthRatio = diff / Number(data["max_limit"]);
             let blockWidthRatioPercent = blockWidthRatio * 100;
-            return `<div class="sub-block initial labeller" style="width: ${blockWidthRatioPercent}%;border-color: #fff; justify-content: right; --label: ${range["label"]}"></div>`;
+            return `<div labelvalue="${range['label']}" class="sub-block initial labeller" style="width: ${blockWidthRatioPercent}%;border-color: #fff; justify-content: right;"></div>`;
         }
         if (index === discount_range.length - 1) {
             let diff = Number(discount_range[index]["label"]) - Number(discount_range[index - 1]["label"]);
             let blockWidthRatio = diff / Number(data["max_limit"]);
             let blockWidthRatioPercent = blockWidthRatio * 100;
-            return `<div class="sub-block labeller" style="width: ${blockWidthRatioPercent}%;border-color: #fff; justify-content: right; --label: ${range["label"]}"></div>`;
+            return `<div labelvalue="${range['label']}" class="sub-block labeller" style="width: ${blockWidthRatioPercent}%;border-color: #fff; justify-content: right;"></div>`;
         }
         let diff = Number(discount_range[index]["label"]) - Number(discount_range[index - 1]["label"]);
         let blockWidthRatio = diff / Number(data["max_limit"]);
         let blockWidthRatioPercent = blockWidthRatio * 100;
-        return `<div class="sub-block labeller" style="width: ${blockWidthRatioPercent}%;border-color: #fff; justify-content: right; --label: ${range["label"]}"></div>`;
+        return `<div labelvalue="${range['label']}" class="sub-block labeller" style="width: ${blockWidthRatioPercent}%;border-color: #fff; justify-content: right;"></div>`;
     });
     discountRangeData = discountRangeData.join("");
     return `
