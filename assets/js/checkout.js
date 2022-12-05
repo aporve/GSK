@@ -207,7 +207,7 @@ function getAccordianAccountsData(data, rebates) {
                 </tr>
                 <tr class="info_row borderBottom">
                     <td class="info_data" colspan="1">£ ${item["price"] || "-"}</td>
-                <td class="info_data" colspan="1">${item["quantity"] || item["units"]}</td>
+                    <td class="info_data" colspan="1">${item["quantity"] || item["units"]}</td>
                     <td class="info_data" colspan="1">${item["free_goods"] || "-"}</td>
                     <td class="info_data" colspan="1">${item["discount"] || "-"}</td>
                     <td class="info_data" colspan="1">${item["payterm"] ? (item["payterm"] + 'D') : "-"}</td>
@@ -244,7 +244,7 @@ function loadOrderFinalCart(data) {
                 <div class="label">Order Details</div>
                 <div class="icon"><img src="/gsk/assets/images/svg/plus.svg" /></div>
             </div>
-            ${loadProgressCards({"brands": filteredBrand}, true, true)}
+            ${loadProgressCards({ "brands": filteredBrand }, true, true)}
             ${getAccordianAccounts(data["new_orders"]["orders"])}
         </div>
         <div class="bottom">

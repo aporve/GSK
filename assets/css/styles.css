@@ -292,7 +292,7 @@
 
 .progressbar .detail_bar .progress_header_label {
     position: absolute;
-    top: 10px;
+    top: -2px;
     left: -40px;
     font-size: 12px;
     font-weight: 600;
@@ -1070,6 +1070,7 @@ table {
 }
 
 .account_select,
+.swap_account_select,
 .periodrebates {
     position: fixed;
     top: 0;
@@ -1087,6 +1088,7 @@ table {
 }
 
 .account_select .account_list,
+.swap_account_select .swap_account_list,
 .periodrebates .rebates_list {
     height: auto;
     background: #fff;
@@ -1099,6 +1101,7 @@ table {
 }
 
 .account_select .account_list .item,
+.swap_account_select .swap_account_list .item,
 .periodrebates .rebates_list  .item {
     font-weight: 600;
     font-size: 14px;
@@ -1109,6 +1112,7 @@ table {
 }
 
 .account_select .account_list .item:hover,
+.swap_account_select .swap_account_list .item:hover,
 .periodrebates .rebates_list .item:hover {
     background: #0f0f0f7e;
     color: #fff;
@@ -1117,10 +1121,12 @@ table {
 }
 
 .account_select .account_list .item:first-child,
+.swap_account_select .swap_account_list .item:first-child,
 .periodrebates .rebates_list .item:first-child {
     margin-top: 0;
 }
 .account_select .account_list .item:last-child,
+.swap_account_select .swap_account_list .item:last-child,
 .periodrebates .rebates_list .item:last-child {
     margin-bottom: 0;
 }

@@ -202,7 +202,7 @@ function addInputListener(inputElement) {
             let filteredData = currentAvailableOrders.filter((order, index) => order["sku"] === currentElementData)
             let orderData = filteredData[0];
             let sibling = $(this).siblings(".counter__box__container.add").children('.counter__plus');
-            updateCounter(sibling[0], "add", window.dataStore["selected_brand"], false, orderData);
+            updateCounter(sibling[0], "add", window.dataStore["selected_brand"], false, orderData, "blur");
         }, 500);
     });
 

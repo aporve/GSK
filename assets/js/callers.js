@@ -22,6 +22,7 @@ function GlobalVarInit() {
     window.dataStore = {};
     window.discountData = {};
     window.currentScreen = "";
+    window.brandArr = {};
 }
 
 function StoreDataIn(data) {

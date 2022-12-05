@@ -95,7 +95,14 @@ function getProgressHeaderFooterLabels(data, sourceContainer) {
                     <div class="main">
                         ${getRange(discount_range, data["offInvoice_discount_execution"])}
                     </div>
-                    ${sourceContainer === "header" ? '<div class="progress_header_label">Disc.</div>' : ""}
+                    ${sourceContainer === "header" ? 
+                        `
+                            <div class="progress_header_label">
+                                ${(data["offInvoice_discount_execution"] === "FINANCIAL") ? 'Disc.' : ''}
+                                ${(data["offInvoice_discount_execution"] === "FREE_GOODS") ? 'Free Goods' : ''}
+                            </div>
+                        ` : ""
+                    }
                     ${sourceContainer === "header" ? '<div class="progress_header_label right">Off <br/> Invoice</div>' : ""}
                     ${sourceContainer === "footer" ? '<div class="progress_footer_label">Value</div>' : ""}
                 </div>
@@ -111,7 +118,14 @@ function getProgressHeaderFooterLabels(data, sourceContainer) {
                     <div class="main">
                         ${getRange(discount_range, data["onInvoice_discount_execution"])}
                     </div>
-                    ${sourceContainer === "header" ? '<div class="progress_header_label">Disc.</div>' : ""}
+                    ${sourceContainer === "header" ? 
+                        `
+                            <div class="progress_header_label">
+                                ${(data["onInvoice_discount_execution"] === "FINANCIAL") ? 'Disc.' : ''}
+                                ${(data["onInvoice_discount_execution"] === "FREE_GOODS") ? 'Free<br />Goods' : ''}
+                            </div>
+                        ` : ""
+                    }
                     ${sourceContainer === "header" ? '<div class="progress_header_label right">On <br/> Invoice</div>' : ""}
                     ${sourceContainer === "footer" ? '<div class="progress_footer_label">Value</div>' : ""}
                 </div>
