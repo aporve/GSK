@@ -289,7 +289,7 @@ window.addEventListener('message', function (eventData) {
         return;
     }
 
-    if (parsedData?.event_code == 'update-data-on-refresh') {
+    if (parsedData?.event_code == 'update-data-on-refresh') { //sending event to bot 
         console.log("\n\n\n <--- update-data-on-refresh event in parent iframe ---> \n\n\n", parsedData);
         localStorage.setItem("updated-data", parsedData.data);
         window.frames.ymIframe.chat.send({
