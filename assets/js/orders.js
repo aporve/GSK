@@ -1,8 +1,13 @@
 function loadUserWelcomeUI(data) {
-    const lastOrder = data["previous_orders"]["orders"][0];
-    const containsPrevOrder = data["previous_orders"]["orders"].length;
+    const containsPrevOrder = data?.["previous_orders"]?.["orders"].length;
+    const lastOrder = data?.["previous_orders"]?.["orders"]?.[containsPrevOrder - 1];
     $(".header").removeClass('hide');
     $("#content_box").empty();
+
+
+    if (!data?.["previous_orders"]?.["orders"].length) {
+        $("#content_box").append(`<div class='empty_screen_msg'>No Orders History Available.`);
+    }
 
     $("#content_box").append(`
         <div class="order_section">
@@ -17,7 +22,8 @@ function loadUserWelcomeUI(data) {
                             <div class="upper_history_container" id="last_order_history"></div>
                             <div class="btn_wrapper">
                                 <div class="btnbox">
-                                    <a class="btn outline place_new_order" href="#">Place New Order</a>
+                                    ${(window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? '<a class="btn outline place_new_order" href="#">Place New Order</a>' : ''
+        }
                                 </div>
                             </div>
                         </div>
@@ -34,7 +40,7 @@ function loadUserWelcomeUI(data) {
                             <div class="btn_wrapper">
                                 <div class="btnbox">
                                     <button class="btn solid inverted" id="backbtnOh">Back</button>
-                                    <a class="btn outline" href=${data["previous_orders"]["download_url"]} download="ashish.csv"><span class="icon"><i class="fa fa-download" aria-hidden="true"></i></span>Download Order History</a>
+                                    <div id="download_file" class="btn outline" href=${data["download_url"]}><span class="icon"><i class="fa fa-download" aria-hidden="true"></i></span>Download Order History</div>
                                 </div>
                             </div>
                         </div>
@@ -44,11 +50,31 @@ function loadUserWelcomeUI(data) {
         </div>
     `);
 
-    if(containsPrevOrder) {
+    $("#download_file").click(function (e) {
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        let blob = new Blob([data["download_url"]], { type: 'text/csv;charset=utf-8' });
+        if (navigator.msSavedBlob) {
+            navigator.msSavedBlob(blob, "orderhistory.csv");
+        } else {
+            let link = document.createElement("a");
+            if (link.download !== undefined) {
+                let url = URL.createObjectURL(blob);
+                link.setAttribute("href", url);
+                link.setAttribute("download", "orderhistory.csv");
+                link.style.visibility = "hidden";
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+    });
+
+    if (containsPrevOrder) {
         addInputEventListener();
 
         $("#last_order_history").append(`
-            <div class="order_card last_order" data=${encodeURIComponent(JSON.stringify(lastOrder))}>
+            <div class="order_card last_order" data=${encodeURIComponent(JSON.stringify(lastOrder))} skudata="${lastOrder['sku']}" date="${lastOrder['ordered_date']}">
                 <div class="title backbtn hide">
                     <div class="arrow name flex back_button" style="font-weight: 400; font-size: 14px; color: #151515;">
                         <img src="/gsk/assets/images/svg/right.svg" style="transform: rotate(180deg);" />
@@ -58,7 +84,7 @@ function loadUserWelcomeUI(data) {
                         <img src="/gsk/assets/images/svg/edit.svg" style="height: 20px; width: 20px;"/>
                     </div>
                 </div>
-                <div class="card_click" data=${encodeURIComponent(JSON.stringify(lastOrder))}>
+                <div class="card_click" data=${encodeURIComponent(JSON.stringify(lastOrder))} skudata="${lastOrder['sku']}" date="${lastOrder['ordered_date']}">
                     <div class="title">
                         <div class="name highlight">${lastOrder["account_no"]}</div>
                         <div class="arrow">
@@ -89,7 +115,7 @@ function loadUserWelcomeUI(data) {
                         <div class="name">Order Details</div>
                     </div>
                     <div class="detail">
-                        <table class="ui very basic table" skudata=${lastOrder["sku"]}>
+                        <table class="ui very basic table" skudata=${lastOrder["sku"]} date="${lastOrder["ordered_date"]}">
                             <thead>
                                 <tr class="info_row">
                                     <td class="info_data" colspan="1">Est. Price</td>
@@ -111,10 +137,11 @@ function loadUserWelcomeUI(data) {
         $("#backbtnOh").click(function (e) {
             e.stopPropagation();
             e.stopImmediatePropagation();
-            document.getElementById("tab21").click();
+            // document.getElementById("tab21").click();
+            switchTab("tab21");
             ToBot("back-on-orderhistory", {});
         });
-    
+
         $(".back_button").click(function (e) {
             e.stopPropagation();
             e.stopImmediatePropagation();
@@ -137,10 +164,10 @@ function loadUserWelcomeUI(data) {
             if (orderData["status"] === "Cancelled") {
                 classValue = "failed";
             }
-    
+
             $("#order_history_container").prepend(`
                 <div class="order_card history clickToOpen" data=${encodeURIComponent(JSON.stringify(orderData))}>
-                    <div class="history_card_click" data=${encodeURIComponent(JSON.stringify(orderData))}>
+                    <div class="history_card_click" data=${encodeURIComponent(JSON.stringify(orderData))} skudata="${lastOrder['sku']}" date="${lastOrder['ordered_date']}">
                         <div class="status_bar_bordered">
                             <div class="bordered ${classValue}"></div>
                             <div style="width: 100%;">
@@ -160,7 +187,7 @@ function loadUserWelcomeUI(data) {
                             <div class="name">Order Details</div>
                         </div>
                         <div class="detail">
-                            <table class="ui very basic table">
+                            <table class="ui very basic table" skudata=${orderData["sku"]}>
                                 <thead>
                                     <tr class="info_row">
                                         <td class="info_data" colspan="1">Est. Price</td>
@@ -170,17 +197,19 @@ function loadUserWelcomeUI(data) {
                                         <td class="info_data" colspan="1">Pay Term</td>
                                     </tr>
                                 </thead>
-                                <tbody id="order_card_tablebody" skudata=${orderData["sku"]}></tbody>
+                                <tbody id="order_card_tablebody" skudata=${orderData["sku"]} date="${orderData["ordered_date"]}"></tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             `);
-    
+
             $(".card_click").click(function (e) {
                 e.stopPropagation();
                 e.stopImmediatePropagation();
                 let currentElementData = $(this).attr("data");
+                let previousSelectedSku = $(this).attr("skudata");
+                let previousSelectedSkuDate = $(this).attr("date");
                 let parsedCurrentElementData = JSON.parse(decodeURIComponent(currentElementData));
                 let childElement = $(this).parent().children(".order_cart");
                 let additionalDetails = parsedCurrentElementData["product_details"];
@@ -195,26 +224,28 @@ function loadUserWelcomeUI(data) {
                             <tr>
                                 <td colspan="5">
                                     <div class="title">
-                                        <div class="name" skudata=${item["sku"]}>${item["name"]}</div>
-                                        <div class="arrow edit quantityEdit">
-                                            <img src="/gsk/assets/images/svg/edit.svg" key=${index} />
-                                        </div>
-                                        <div class="arrow edit quantitySave hide">
-                                            <img src="/gsk/assets/images/svg/save.svg" key=${index} />
-                                        </div>
+                                        <div class="name" skudata=${item["sku"]} date="${orderData["ordered_date"]}">${item["name"]}</div>
+                                        ${parsedCurrentElementData["internalOrderStatus"] === "OPEN" ? `
+                                            <div class="arrow edit quantityEdit">
+                                                <img src="/gsk/assets/images/svg/edit.svg" key=${index} />
+                                            </div>
+                                            <div class="arrow edit quantitySave hide">
+                                                <img src="/gsk/assets/images/svg/save.svg" key=${index} />
+                                            </div>
+                                        ` : ""}
                                     </div>
                                 </td>
                             </tr>
                             <tr class="info_row key${index}">
-                                <td class="info_data" colspan="1">£ ${item["price"]}</td>
-                                <td class="info_data editable" colspan="1"><input value=${item["units"]} type="text" size="4" maxlength="4" autocomplete="off"/></td>
-                                <td class="info_data" colspan="1">+${item["free_goods"]}</td>
-                                <td class="info_data" colspan="2">${item["discount"]}%</td>
-                                <td class="info_data" colspan="1">${item["payterm"]} D</td>
+                                <td class="info_data" colspan="1">£ ${item["price"] && item["price"] !== "null" ? item["price"] : "-"}</td>
+                                <td class="info_data editable" colspan="1"><input value=${item["quantity"] || item["units"]} type="text" size="4" maxlength="4" autocomplete="off" disabled/></td>
+                                <td class="info_data" colspan="1">${item["free_goods"] && item["free_goods"] !== "null" ? item["free_goods"] : "-"}</td>
+                                <td class="info_data" colspan="1">${item["discount"] && item["discount"] !== "null" ? item["discount"] : "-"}</td>
+                                <td class="info_data" colspan="1">${item["payterm"] && item["payterm"] !== "null" ? (item["payterm"] + 'D') : "-"}</td>
                             </tr>
                         `);
                     })
-    
+
                     $(".arrow.edit.quantityEdit").click(function (e) {
                         e.stopPropagation();
                         e.stopImmediatePropagation();
@@ -224,9 +255,10 @@ function loadUserWelcomeUI(data) {
                         let getElement = $(this).parent().parent().parent().siblings(`.info_row.key${index}`).children(".editable");
                         getElement.attr("prev-value", $(getElement).children().val());
                         $(getElement).addClass("active")
+                        $(getElement).children().attr("disabled", false);
                         PosEnd($(getElement).children()[0]);
                     });
-    
+
                     $(".arrow.edit.quantitySave").click(function (e) {
                         e.stopPropagation();
                         e.stopImmediatePropagation();
@@ -237,33 +269,60 @@ function loadUserWelcomeUI(data) {
                         let getElementValue = $(getElement).children().val();
                         let getElementPrevValue = getElement.attr("prev-value");
                         $(getElement).removeClass("active");
+                        $(getElement).children().attr("disabled", true);
                         let value = $(getElement).children().val();
                         let siblingElementDataSku = $(this).siblings(".name").attr("skudata");
                         let tableElement = $(this).parent().parent().parent().parent().parent();
                         let currentElementDataSku = $(tableElement).attr("skudata");
-                        window.updateCartData = {
-                            ...window.updateCartData,
-                            [currentElementDataSku]: {
-                                ...window.updateCartData[currentElementDataSku],
-                                [siblingElementDataSku]: value
+
+                        let parseData = getParsedData();
+                        let shouldContinueOrder = false;
+                        let prevEditedSku = parseData["previous_orders"]["orders"].filter(prorder => {
+                            if (prorder["sku"] === previousSelectedSku && prorder["ordered_date"] === previousSelectedSkuDate) {
+                                prorder["product_details"].map(pd => {
+                                    if (pd["sku"] === $(this).siblings(".name").attr("skudata")) {
+                                        if (Number(value) > pd["maxLimit"]) {
+                                            showSnackbar(true, "Value exceeding the max limit.");
+                                            $(getElement).children().val(value)
+                                            $(getElement).children().change()
+                                            return;
+                                        }
+                                        pd["units"] = value;
+                                        shouldContinueOrder = true;
+                                    }
+                                })
+                                return prorder;
                             }
-                        };
-                        if (getElementValue !== getElementPrevValue) {
-                            ToBot("update-order-data", window.updateCartData)
+                        });
+
+                        if (shouldContinueOrder) {
+                            window.updateCartData = {
+                                ...window.updateCartData,
+                                [currentElementDataSku]: {
+                                    ...window.updateCartData[currentElementDataSku],
+                                    [siblingElementDataSku]: value
+                                }
+                            };
+                            if (getElementValue !== getElementPrevValue) {
+                                ToBot("update-order-data", prevEditedSku[0]);
+                            }
                         }
+
                     });
-    
+
                     $(this).css("pointer-events", "none");
                 } else {
                     childElement.addClass("hide");
                     $(this).children(".title.backbtn").addClass("hide");
                 }
             });
-    
+
             $(".history_card_click").click(function (e) {
                 e.stopPropagation();
                 e.stopImmediatePropagation();
                 let currentElementData = $(this).attr("data");
+                let previousSelectedSku = $(this).attr("skudata");
+                let previousSelectedSkuDate = $(this).attr("date");
                 let parsedCurrentElementData = JSON.parse(decodeURIComponent(currentElementData));
                 let childElement = $(this).parent().children(".order_cart");
                 let additionalDetails = parsedCurrentElementData["product_details"];
@@ -276,25 +335,28 @@ function loadUserWelcomeUI(data) {
                             <tr>
                                 <td colspan="5">
                                     <div class="title">
-                                        <div class="name">${item["name"]}</div>
-                                        <div class="arrow edit quantityEdit hide">
-                                            <img src="/gsk/assets/images/svg/edit.svg" key=${index} />
-                                        </div>
-                                        <div class="arrow edit quantitySave hide">
-                                            <img src="/gsk/assets/images/svg/save.svg" />
-                                        </div>
+                                        <div class="name" skudata=${item["sku"]} date="${orderData["ordered_date"]}">${item["name"]}</div>
+                                        ${parsedCurrentElementData["internalOrderStatus"] === "OPEN" ? `
+                                            <div class="arrow edit quantityEdit">
+                                                <img src="/gsk/assets/images/svg/edit.svg" key=${index} />
+                                            </div>
+                                            <div class="arrow edit quantitySave hide">
+                                                <img src="/gsk/assets/images/svg/save.svg" key=${index} />
+                                            </div>
+                                        ` : ""}
                                     </div>
                                 </td>
                             </tr>
                             <tr class="info_row key${index}">
-                                <td class="info_data" colspan="1">£ ${item["price"]}</td>
-                                <td class="info_data editable" colspan="1"><input value=${item["units"]} type="text" size="4" maxlength="4" autocomplete="off"/></td>
-                                <td class="info_data" colspan="1">+${item["free_goods"]}</td>
-                                <td class="info_data" colspan="1">${item["discount"]}%</td>
-                                <td class="info_data" colspan="1">${item["payterm"]} D</td>
+                                <td class="info_data" colspan="1">£ ${item["price"] && item["price"] !== "null" ? item["price"] : "-"}</td>
+                                <td class="info_data editable" colspan="1"><input value=${item["quantity"] || item["units"]} type="text" size="4" maxlength="4" autocomplete="off" disabled/></td>
+                                <td class="info_data" colspan="1">${item["free_goods"] && item["free_goods"] !== "null" ? item["free_goods"] : "-"}</td>
+                                <td class="info_data" colspan="1">${item["discount"] && item["discount"] !== "null" ? item["discount"] : "-"}</td>
+                                <td class="info_data" colspan="1">${item["payterm"] && item["payterm"] !== "null" ? (item["payterm"] + 'D') : "-"}</td>
                             </tr>
                         `);
                     });
+
                     $(".arrow.edit.quantityEdit").click(function (e) {
                         e.stopPropagation();
                         e.stopImmediatePropagation();
@@ -302,8 +364,59 @@ function loadUserWelcomeUI(data) {
                         $(this).addClass("hide");
                         $(this).siblings().removeClass("hide");
                         let getElement = $(this).parent().parent().parent().siblings(`.info_row.key${index}`).children(".editable");
-                        $(getElement).addClass("active")
-                        $(getElement).children().focus();
+                        $(getElement).addClass("active");
+                        $(getElement).children().attr("disabled", false);
+                        PosEnd($(getElement).children()[0]);
+                    });
+
+                    $(".arrow.edit.quantitySave").click(function (e) {
+                        e.stopPropagation();
+                        e.stopImmediatePropagation();
+                        let index = $(this).children().attr("key");
+                        $(this).addClass("hide");
+                        $(this).siblings().removeClass("hide");
+                        let getElement = $(this).parent().parent().parent().siblings(`.info_row.key${index}`).children(".editable");
+                        let getElementValue = $(getElement).children().val();
+                        let getElementPrevValue = getElement.attr("prev-value");
+                        $(getElement).removeClass("active");
+                        $(getElement).children().attr("disabled", true);
+                        let value = $(getElement).children().val();
+                        let siblingElementDataSku = $(this).siblings(".name").attr("skudata");
+                        let tableElement = $(this).parent().parent().parent().parent().parent();
+                        let currentElementDataSku = $(tableElement).attr("skudata");
+                        let parseData = getParsedData();
+                        let shouldContinueOrder = false;
+                        let prevEditedSku = parseData["previous_orders"]["orders"].filter(prorder => {
+                            if (prorder["sku"] === previousSelectedSku && prorder["ordered_date"] === previousSelectedSkuDate) {
+                                prorder["product_details"].map(pd => {
+                                    if (pd["sku"] === $(this).siblings(".name").attr("skudata")) {
+                                        if (Number(value) > pd["maxLimit"]) {
+                                            showSnackbar(true, "Value exceeding the maximum limit!!!");
+                                            $(getElement).children().val(value)
+                                            $(getElement).children().change()
+                                            return;
+                                        }
+                                        pd["units"] = value;
+                                        shouldContinueOrder = true;
+                                    }
+                                })
+                                return prorder;
+                            }
+                        });
+
+                        if (shouldContinueOrder) {
+                            window.updateCartData = {
+                                ...window.updateCartData,
+                                [currentElementDataSku]: {
+                                    ...window.updateCartData[currentElementDataSku],
+                                    [siblingElementDataSku]: value
+                                }
+                            };
+
+                            if (getElementValue !== getElementPrevValue) {
+                                ToBot("update-order-data", prevEditedSku[0]);
+                            }
+                        }
                     });
                 } else {
                     childElement.addClass("hide");
@@ -343,8 +456,8 @@ function loadBrandSelectionUI(data) {
                     <img class="back-arrow" src="/gsk/assets/images/svg/right.svg"/>
                     Choose Brands
                 </div>
-                <div class="icon">
-                    <img src="/gsk/assets/images/svg/basket.svg" class="view_checkout" />
+                <div class="icon view_checkout">
+                    <img src="/gsk/assets/images/svg/basket.svg" />
                     <div class="count_wrapper hide"></div>
                 </div>
             </div>
@@ -367,7 +480,7 @@ function loadBrandSelectionUI(data) {
     }); */
 
     // let total = calculateSumAmount(window.cartData);
-    
+
     let parseData = getParsedData();
     let total = 0;
     parseData && parseData?.["new_orders"] && parseData?.["new_orders"]?.["orders"] && parseData?.["new_orders"]?.["orders"].map((ordr, index) => {
@@ -396,8 +509,10 @@ function loadBrandSelectionUI(data) {
     $(".back-arrow").click(function (e) {
         e.stopPropagation();
         e.stopImmediatePropagation();
-        ToApp('userwelcome-screen', data);
-        ToBot('back-brand-select', data);
+        let parseData = getParsedData()
+        loadUserWelcomeUI(parseData);
+        parseData["plan_progress"] && loadPlanProgress(parseData["plan_progress"], true);
+        ToBot('back-brand-select', parseData);
     });
 
     $(".progressbar_wrapper.addproduct").click(function (e) {
@@ -405,7 +520,7 @@ function loadBrandSelectionUI(data) {
         e.stopImmediatePropagation();
         const currentElementSkuData = $(this).attr("skudata");
         const parsedData = getParsedData();
-        if(window.dataStore && Object.keys(window.dataStore).length !== 0) {
+        if (window.dataStore && Object.keys(window.dataStore).length !== 0) {
             window.dataStore["selected_brand"] = currentElementSkuData;
         }
         parsedData["selected_brand"] = currentElementSkuData;
@@ -425,10 +540,14 @@ function loadBrandSelectionUI(data) {
 
 function loadBrandSelectionUIByBrandName(data, name) {
     const currentElementSkuData = data["selected_brand"];
-    if(window.dataStore && Object.keys(window.dataStore).length !== 0) {
+    if (window.dataStore && Object.keys(window.dataStore).length !== 0) {
         window.dataStore["selected_brand"] = currentElementSkuData;
     }
     const filteredBrand = data["plan_progress"]["brands"].filter(brand => brand["sku"] === currentElementSkuData);
     const isBrandSku = filteredBrand[0]["isSku"];
     isBrandSku ? showSkuLevelDetailsBrand(data, currentElementSkuData) : showBrandLevelDetails(data, currentElementSkuData);
+}
+
+function switchTab(tab) {
+    document.getElementById(tab).click();
 }

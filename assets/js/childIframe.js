@@ -144,6 +144,28 @@ window.addEventListener('message', function (eventData) {
         console.log('Event Data---', data);
     }
 
+    if (parsedEventData.event_code === "orderhistory-screen" && parsedEventData.data) {
+        document.querySelector("iframe").contentWindow.postMessage(JSON.stringify({
+            event_code: 'orderhistory-screen',                                                // added new event name
+            data: parsedEventData.data
+        }), '*');
+        let eventName = parsedEventData.event_code;
+        let data = parsedEventData.data;
+        console.log("eventName---", eventName);
+        console.log('Event Data---', data);
+    }
+
+    if (parsedEventData.event_code === "confirmorderon-bot" && parsedEventData.data) {
+        document.querySelector("iframe").contentWindow.postMessage(JSON.stringify({
+            event_code: 'confirmorderon-bot',                                                // added new event name
+            data: parsedEventData.data
+        }), '*');
+        let eventName = parsedEventData.event_code;
+        let data = parsedEventData.data;
+        console.log("eventName---", eventName);
+        console.log('Event Data---', data);
+    }
+
     if (parsedEventData.event_code === "bot-reloaded" && parsedEventData.data) {
         document.querySelector("iframe").contentWindow.postMessage(JSON.stringify({
             event_code: 'bot-reloaded',                                                // added new event name
@@ -152,7 +174,7 @@ window.addEventListener('message', function (eventData) {
         let eventName = parsedEventData.event_code;
         let data = parsedEventData.data;
         console.log("eventName---", eventName);
-        console.log('refreshed local storage data in childIframe', data);
+        console.log('refreshed local storage data in childIframe', JSON.parse(data));
     }
 
 
@@ -268,6 +290,14 @@ window.addEventListener('message', function (eventData) {
         // console.log('checkout-to-brand-detailing Data in child Iframe~~~>>', parsedEventData.data)
         parent.postMessage(JSON.stringify({
             event_code: 'checkout-to-brand-detailing',
+            data: parsedEventData.data
+        }), '*');
+    }
+
+    if (parsedEventData.event_code === "update-order-data") {
+        // console.log('update-order-data Data in child Iframe~~~>>', parsedEventData.data)
+        parent.postMessage(JSON.stringify({
+            event_code: 'update-order-data',
             data: parsedEventData.data
         }), '*');
     }

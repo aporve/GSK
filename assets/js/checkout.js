@@ -44,30 +44,20 @@ function loadOrderCart(data) {
     $("#cancel").click(function (e) {
         e.stopPropagation();
         e.stopImmediatePropagation();
-        let parseData = JSON.parse(localStorage.getItem("init"));
-        ToBot("cancel-order", parseData);
-        ToApp("userwelcome-screen", parseData);
+        cancelOrder();
         // showBrandLevelDetails(parseData, parseData["selected_brand"]);
     });
 
     $("#confirm").click(function (e) {
         e.stopPropagation();
         e.stopImmediatePropagation();
-        let data = getParsedData();
-        let filteredBrand = data["plan_progress"]["brands"].filter(brand => brand["sku"] === data["selected_brand"]);
-        if(filteredBrand && filteredBrand[0] && filteredBrand[0]["total_invoice_range"]) {
-            ToApp("ordercart-final-screen", data);
-        } else {
-            ToBot("confirm-order", data);
-            /* loadUserWelcomeUI(data);
-            data["plan_progress"] && loadPlanProgress(data["plan_progress"], true, true); */
-        }
+        confirmOrder();
         /* data["plan_progress"]["brands"].map(progress => {
             progress["purchased"] = Number(progress["purchased"]) + Number(progress["selected"]);
         }); */
         // ToApp('userwelcome-screen', data);
         // ToApp("ordercart-final-screen", data);
-        
+
     });
 
     $(".accordion-item-header.account_detail").click(function (e) {
@@ -85,7 +75,7 @@ function loadOrderCart(data) {
         }
     });
 
-    if(getAccordianAccounts(data["rebates_orders"]["orders"])) {
+    if (data["rebates_orders"]["orders"].length) {
         $(".periodrebates").click(function (e) {
             e.stopPropagation();
             e.stopImmediatePropagation();
@@ -121,28 +111,49 @@ function loadOrderCart(data) {
         autoHideScrollbar: true
     }); */
 
-    
+
     /* $(".accordion-item-body-content").mCustomScrollbar({
         theme: "dark-thin",
         scrollButtons: { enable: false },
         autoHideScrollbar: true
     }); */
+
+    $(".quantityEditBackToSelection").click(function (e) {
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        let parseData = window.dataStore;
+        let selectedBrand = $(this).attr("brand");
+        // showBrandLevelDetails(parseData, selectedBrand);
+        ToBot("checkout-to-brand-detailing", parseData);
+
+        const filteredBrand = parseData["plan_progress"]["brands"].filter(brand => brand["sku"] === selectedBrand);
+        const isBrandSku = filteredBrand[0]["isSku"];
+        isBrandSku ? showSkuLevelDetailsBrand(parseData, selectedBrand, "from-checkout") : showBrandLevelDetails(parseData, selectedBrand, "from-checkout");
+    });
 }
 
 function getAccordianAccounts(data, rebates) {
     let parsedData = getParsedData();
+    let newDataJoined = [];
+    if (rebates) {
+        newDataJoined = data || [];
+    } else {
+        newDataJoined = getJoinedCheckout(parsedData);
+    }
+    console.log("newDataJoined -> ", newDataJoined);
     let filteredBrand = parsedData["plan_progress"]["brands"].filter(brand => brand["sku"] === parsedData["selected_brand"]);
     const getRebatesSwitchOption = (rebates) => {
-        if(rebates) {
+        if (rebates) {
             return `
                 <div class="edit switchWholesalerAccount" style="height: auto; width: 16px; margin-right: 10px;" skudata=${data["sku"]}>
                     <img src="/gsk/assets/images/svg/edit.svg" />
                 </div>
             `
-        } 
+        }
         return "";
     }
-    let accordianAccounts = data.map(order => {
+
+    let accordianAccounts = newDataJoined && newDataJoined.map(order => {
         return `
             <div class="accordion">
                 <div class="accordion-item">
@@ -161,7 +172,6 @@ function getAccordianAccounts(data, rebates) {
                                 <div class="flex calendar-picker">
                                     <img class="picker" src="/gsk/assets/images/svg/calendar.svg" />
                                     <div class="input_date_picker" readonly="readonly">${order["ordered_date"]}</div>
-                                    <img class="arrow-down" src="/gsk/assets/images/svg/down.svg" />
                                 </div>
                             </div>
                             <div class="flex title">PRODUCTS</div>
@@ -193,14 +203,14 @@ function getAccordianAccountsData(data, rebates) {
     let brand = parsedData["plan_progress"]["brands"].filter(brand => brand["sku"] === parsedData["selected_brand"]);
     let filteredBrand = brand[0];
     let accordianAccountsData = data.map((item, index) => {
-        if(rebates || item["quantity"]) {
+        if (rebates || item["quantity"]) {
             return `
                 <tr>
                     <td colspan="5">
                         <div class="title paddingTop">
                             <div class="name">${item["name"]}</div>
                             <div class="arrow edit quantityEditBackToSelection" brand="${item['brand']}">
-                                <img src="/gsk/assets/images/svg/edit.svg" key=${index} />
+                                ${rebates ? "" : '<img src="/gsk/assets/images/svg/edit.svg" key=${index} />'}
                             </div>
                         </div>
                     </td>
@@ -209,25 +219,13 @@ function getAccordianAccountsData(data, rebates) {
                     <td class="info_data" colspan="1">£ ${item["price"] || "-"}</td>
                     <td class="info_data" colspan="1">${item["quantity"] || item["units"]}</td>
                     <td class="info_data" colspan="1">${item["free_goods"] || "-"}</td>
-                    <td class="info_data" colspan="1">${item["discount"] || "-"}</td>
+                    <td class="info_data" colspan="1">${item["discount"] ? (item["discount"] + '%') : "-"}</td>
                     <td class="info_data" colspan="1">${item["payterm"] ? (item["payterm"] + 'D') : "-"}</td>
                 </tr>
             `
         }
     });
 
-    $(".quantityEditBackToSelection").click(function (e) {
-        e.stopPropagation();
-        e.stopImmediatePropagation();
-        let parseData = JSON.parse(localStorage.getItem("data"));
-        let selectedBrand = $(this).attr("brand");
-        // showBrandLevelDetails(parseData, selectedBrand);
-        ToBot("checkout-to-brand-detailing", parseData);
-
-        const filteredBrand = parseData["plan_progress"]["brands"].filter(brand => brand["sku"] === selectedBrand);
-        const isBrandSku = filteredBrand[0]["isSku"];
-        isBrandSku ? showSkuLevelDetailsBrand(parsedData, selectedBrand) : showBrandLevelDetails(parsedData, selectedBrand);
-    });
     return accordianAccountsData.join("");
 }
 
@@ -298,7 +296,7 @@ function loadOrderFinalCart(data) {
         autoHideScrollbar: true
     }); */
 
-    
+
     /* $(".accordion-item-body-content").mCustomScrollbar({
         theme: "dark-thin",
         scrollButtons: { enable: false },
@@ -312,3 +310,23 @@ function goBack() {
     const isBrandSku = filteredBrand[0]["isSku"];
     !isBrandSku ? showSkuLevelDetailsBrand(parsedData, parsedData["selected_brand"]) : showBrandLevelDetails(parsedData, parsedData["selected_brand"]);
 };
+
+function confirmOrder() {
+    let data = getParsedData();
+    let filteredBrand = data["plan_progress"]["brands"].filter(brand => brand["sku"] === data["selected_brand"]);
+    if (filteredBrand && filteredBrand[0] && filteredBrand[0]["total_invoice_range"]) {
+        ToApp("ordercart-final-screen", data);
+    } else {
+        let updatedData = getJoinedCheckout(data);
+        console.log("updated data --> ", updatedData);
+        ToBot("confirm-order", updatedData);
+        /* loadUserWelcomeUI(data);
+        data["plan_progress"] && loadPlanProgress(data["plan_progress"], true, true); */
+    }
+}
+
+function cancelOrder() {
+    let parseData = JSON.parse(localStorage.getItem("init"));
+    ToBot("cancel-order", parseData);
+    ToApp("userwelcome-screen", parseData);
+}

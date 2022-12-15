@@ -91,17 +91,17 @@ function showDatePicker() {
     return `
         <div class="flex calendar-picker">
             <img class="picker" src="/gsk/assets/images/svg/calendar.svg" />
-            <input type='text' id='tbDate' placeholder='select a date' readonly="readonly" />
+            <input type='text' id='tbDate' placeholder='Pick Date' readonly="readonly" />
             <img class="arrow-down" src="/gsk/assets/images/svg/down.svg" />
              </div>
     `;
 }
 
-function showDatePickerWhite() {
+function showDatePickerWhite(date) {
     return `
         <div class="flex calendar-picker">
             <img class="picker" src="/gsk/assets/images/svg/calendar-white.svg" />
-            <input type='text' id='tbDate' placeholder='select a date' readonly="readonly" />
+            <input type='text' id='tbDate' placeholder=${date ? date : 'Pick Date'} readonly="readonly" />
             <img class="arrow-down" src="/gsk/assets/images/svg/down-white.svg" />
         </div>
     `;
@@ -192,9 +192,7 @@ function addInputListener(inputElement) {
     
     window[inputElement].blur(function () {
         setTimeout(() => {
-            console.log("this blur --> ", this);
             console.log("blurred --> ", $(this).val());
-            
             $(this).val(parseInt($(this).val()) - 1);
             $(this).change();
             let currentElementData = $(this).attr("skudata");
@@ -202,14 +200,104 @@ function addInputListener(inputElement) {
             let filteredData = currentAvailableOrders.filter((order, index) => order["sku"] === currentElementData)
             let orderData = filteredData[0];
             let sibling = $(this).siblings(".counter__box__container.add").children('.counter__plus');
-            updateCounter(sibling[0], "add", window.dataStore["selected_brand"], false, orderData, "blur");
+
+            const filteredBrand = window.dataStore["plan_progress"]["brands"].filter(brand => brand["sku"] === window.dataStore["selected_brand"]);
+            const isBrandSku = filteredBrand[0]["isSku"];
+            updateCounter(sibling[0], "add", window.dataStore["selected_brand"], isBrandSku, orderData, "blur");
         }, 500);
     });
 
     window[inputElement].keypress(function (e) {
         var key = e.keyCode || e.which;
         if (key == 13) {
+            /* let dateDivWrapper = $(this).parent().parent().parent().parent().parent().parent().siblings('.date-picker-value').children().children(".hasDatepicker");
+            let isDateSelected = dateDivWrapper.datepicker({ dateFormat: 'M dd, y' }).val()
+            if(!isDateSelected) {
+                showSnackbar(true, "Please select date!!!");
+                return;
+            } */
            $(this).blur();
         }
     });
+}
+
+// function addInputListener(inputElement) {
+//     window[inputElement] = $(`.${inputElement}`);
+    
+//     window[inputElement].blur(function () {
+//         setTimeout(() => {
+//             console.log("this blur --> ", this);
+//             console.log("blurred --> ", $(this).val());
+            
+//             $(this).val(parseInt($(this).val()) - 1);
+//             $(this).change();
+//             let currentElementData = $(this).attr("skudata");
+//             let currentAvailableOrders = window.dataStore["available_orders"]["orders"];
+//             let filteredData = currentAvailableOrders.filter((order, index) => order["sku"] === currentElementData)
+//             let orderData = filteredData[0];
+//             let sibling = $(this).siblings(".counter__box__container.add").children('.counter__plus');
+//             updateCounter(sibling[0], "add", window.dataStore["selected_brand"], false, orderData, "blur");
+//         }, 500);
+//     });
+
+//     window[inputElement].keypress(function (e) {
+//         var key = e.keyCode || e.which;
+//         if (key == 13) {
+//            $(this).blur();
+//         }
+//     });
+// }
+
+
+function getJoinedCheckout (data) {
+    function groupBy(objectArray, property) {
+        return objectArray.reduce((acc, obj) => {
+            const key = obj[property];
+            const curGroup = acc[key] ?? [];
+    
+            return { ...acc, [key]: [...curGroup, obj] };
+        }, {});
+    }
+    
+    let updatedData = data["new_orders"]["orders"].map(order => {
+        let parsedProductDetails = order["product_details"].filter((product, index) => {
+            product["_id"] = order["_id"];
+            if(product["quantity"] && Number(product["quantity"])) {
+                return product;
+            }
+        });
+        order["product_details"] = parsedProductDetails;
+        return order;
+    });
+    
+    let groupByOrderedDate = groupBy(updatedData, "ordered_date");
+    
+    let groupBySku = [];
+    let finalCartData = [];
+    for (const key in groupByOrderedDate) {
+        groupBySku.push(groupBy(groupByOrderedDate[key], "sku"));
+    }
+    
+    function combine(objectArray, key) {
+        return objectArray.reduce((accumulator, currentValue) => [...accumulator, ...currentValue[key]], []);
+    }
+     
+    groupBySku.map(nr => {
+        for (const key in nr) {
+            let updatedDetails = combine(nr[key], "product_details");
+            nr[key] = {
+                ...nr[key][0],
+                "product_details": updatedDetails
+            }
+        }
+        return nr;
+    });
+    
+    groupBySku.map(nr => {
+        for (const key in nr) {
+            finalCartData.push(nr[key])
+        }
+    });
+
+    return finalCartData;
 }
