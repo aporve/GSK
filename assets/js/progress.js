@@ -176,7 +176,7 @@ function getProductsProgress(item, detailed, hideAdd, basicProgress, colorscheme
             ""
             :
             `
-                <label style="font-size: 12px;">${parseInt(item["purchased"] || 0) + parseInt(item["selected"])}</label>
+                <label style="font-size: 12px;">${parseInt(item["purchased"] || 0) + parseInt(item["selected"]) > parseInt(item["max_limit"]) ? parseInt(item["max_limit"]) : parseInt(item["selected"])}</label>
                 <div class="progressbar_wrapper addproduct" skudata=${`${item["sku"]}`} >
                     <!--<div class="main reset" style="cursor: pointer;">
                         <img src="/gsk/assets/images/svg/plus.svg" class="icon_add"/>
@@ -299,7 +299,7 @@ function getProductsProgress(item, detailed, hideAdd, basicProgress, colorscheme
                         <div class="main" style="background: transparent;">
                             ${rangeDataDivs}
                         </div>
-                        ${!detailed ? '' : `<div class="quantity_total">${parseInt(item["purchased"] || 0) + parseInt(item["selected"])}</div>`}
+                        ${!detailed ? '' : `<div class="quantity_total">${parseInt(item["purchased"] || 0) + parseInt(item["selected"]) > parseInt(item["max_limit"]) ? parseInt(item["max_limit"]) : parseInt(item["selected"]) }</div>`}
                     </div>
                 </div>
                 ${detailed ? getProgressHeaderFooterLabels(item, "footer") : ""}
@@ -327,11 +327,11 @@ function getInvertedProgress(item, progressPercent, colorscheme) {
 }
 
 function getSelectedProgress(item, progressPercentSelected, colorscheme, hideSelectedProgress) {
-    // console.log("progressPercent -> ", progressPercentSelected, "<-- ", item);
-    let progressValue = ((parseInt(item["purchased"]) || 0) + parseInt(item["selected"])) > item["max_limit"];
-    if (progressValue) {
+    let progressValue = ((parseInt(item["purchased"])|| 0) + parseInt(item["selected"])) > item["max_limit"] ;
+    console.log("progressValue -> ", progressValue);
+    if(progressValue) {
         return `
-            <div class="progressbar_ratio" style="width:${Math.abs(progressPercentSelected)}%; background: ${colorscheme} !important; border-top-right-radius: ${Number(progressPercentSelected) >= 100 ? '6px' : '10px'}; border-bottom-right-radius: ${Number(progressPercentSelected) >= 100 ? '6px' : '10px'};">
+            <div class="progressbar_ratio" style="width:${Math.abs(progressPercentSelected)}%; background: ${colorscheme} !important; border-top-right-radius: ${Number(progressPercentSelected) >= 100 ? '6px': '10px'}; border-bottom-right-radius: ${Number(progressPercentSelected) >= 100 ? '6px': '10px'};">
                 <div class="ratio_wrapper">
                     <div class="ratio">${!hideSelectedProgress ? "+" : ""} ${parseInt(item["max_limit"])}</div>
                 </div>
@@ -340,7 +340,7 @@ function getSelectedProgress(item, progressPercentSelected, colorscheme, hideSel
     }
     if (progressPercentSelected) {
         return `
-            <div class="progressbar_ratio" style="width:${Math.abs(progressPercentSelected)}%; background: ${colorscheme} !important; border-top-right-radius: ${Number(progressPercentSelected) >= 100 ? '6px' : '10px'}; border-bottom-right-radius: ${Number(progressPercentSelected) >= 100 ? '6px' : '10px'};">
+            <div class="progressbar_ratio" style="width:${Math.abs(progressPercentSelected)}%; background: ${colorscheme} !important; border-top-right-radius: ${Number(progressPercentSelected) >= 100 ? '6px': '10px'}; border-bottom-right-radius: ${Number(progressPercentSelected) >= 100 ? '6px': '10px'};">
                 <div class="ratio_wrapper">
                     <div class="ratio">${!hideSelectedProgress ? "+" : ""} ${parseInt(item["selected"])}</div>
                 </div>

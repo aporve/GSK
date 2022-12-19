@@ -123,8 +123,17 @@
     align-items: center;
     font-weight: 500;
     font-size: 14px;
-    color: #ffffff;
+    color: #f0efed;
     white-space: nowrap;
+}
+
+.choosebrands .progress_card.transparent .progress_plan .grouped .progressbar .progressbar_ratio .ratio_wrapper .ratio {
+    color: #f0efed;
+}
+
+.progress_plan .grouped .progressbar .progressbar_ratio .ratio_wrapper .ratio,
+.accordian.table .info_row.brandscreen td.skuBrand_level_progress .progress_card.transparent .progress_plan .grouped .progressbar .progressbar_ratio .ratio_wrapper .ratio {
+    color: #ffffff;
 }
 
 .progressbar label {
@@ -300,16 +309,19 @@
 
 .progressbar .detail_bar .progress_header_label {
     position: absolute;
-    top: -2px;
-    left: -40px;
+    /* top: -2px; */
+    top: 9.5px;
+    /* left: -40px; */
+    right: calc(100% + 14px);
     font-size: 12px;
+    line-height: 12px;
     font-weight: 600;
     color: #f26633;
 }
 
 .progressbar .detail_bar .progress_header_label.right {
     position: absolute;
-    top: -2px;
+    top: 7.5px;
     left: unset;
     right: -50px;
     font-size: 12px;
@@ -318,8 +330,8 @@
 
 .progressbar .detail_bar .progress_footer_label {
     position: absolute;
-    bottom: 10px;
-    left: -40px;
+    bottom: 7.5px;
+    right: calc(100% + 14px);
     font-size: 12px;
     font-weight: 600;
 }
@@ -973,13 +985,13 @@ table {
 }
 
 .accordian.table .info_row.brandscreen td .progress_card .progress_plan .grouped .progressbar .wrapper_brand_progress:nth-child(2){
-    width: 94% !important;
-    padding-left: 20px;
+    /* width: 94% !important; */
+    /* padding-left: 20px; */
 }
 
 .accordian.table .info_row.brandscreen td .progress_card .progress_plan .grouped .progressbar .wrapper_brand_progress:nth-child(3){
-    display: none;
-    width: 0 !important;
+    /* display: none; */
+    /* width: 0 !important; */
 }
 
 .accordian.table .info_row {
