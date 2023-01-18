@@ -107,6 +107,13 @@
             };
         // }
 
+        document.onreadystatechange = () => {
+            if (document.readyState === 'complete') {
+                console.log('---Loaded---');
+                ToBot("get-data-from-localstorage", 'LocalStorageEvent');
+            }
+        };
+
         const snack = document.querySelector('#snack');
         const snackbar = document.querySelector('.snackbar');
         const heading = document.querySelector('.snackbar-text-heading');
