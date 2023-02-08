@@ -1,14 +1,16 @@
 
 function loadPlanProgress(data, basicProgress, hideSelectedProgress) {
+    let localStoredData = JSON.parse(localStorage.getItem("data"));
+    let locale = localStoredData["locale"];
     $("#progress_plan_main").empty();
     $("#progress_plan_main").prepend(`
         <div class="title">
-            <div class="name highlight">${data["title"]}</div>
+            <div class="name highlight">${locale["labels"]["title"]}</div>
             <div class="arrow calendar">
                 <!-- <span>
                     <img src="/gsk/assets/images/svg/calendar.svg" />
                 </span> -->
-                <p style="color: #f36633;">End Date:&nbsp;&nbsp;</p> ${data["last_date"]}
+                <p style="color: #f36633;">${locale["labels"]["endDate"]}:&nbsp;&nbsp;</p> ${data["last_date"]}
             </div>
         </div>
         <div id="plan_items"></div>
@@ -39,17 +41,19 @@ function loadProgressCards(data, detailed, hideAdd) {
 }
 
 function getProgressHeaderFooterLabels(data, sourceContainer) {
+    let localStoredData = JSON.parse(localStorage.getItem("data"));
+    let locale = localStoredData["locale"];
     let discount_range = data["on_invoice_range"] ? data["on_invoice_range"] : data["off_invoice_range"];
-    let backgroundProgressWidth = Number(data["max_limit"]) / discount_range.length;
-    let backgroundProgressPerc = (backgroundProgressWidth / Number(data["max_limit"])) * 100;
+    let backgroundProgressWidth = Number(data["max_limit"])/discount_range.length;
+    let backgroundProgressPerc = (backgroundProgressWidth/Number(data["max_limit"])) * 100;
     // console.log("backgroundProgressWidth -> ", backgroundProgressPerc);
 
     function getRange(rangeData, type) {
         let isLabelReached = false;
         let rangeDataDivs = rangeData.map((range, index) => {
-            if (index === 0) {
+            if(index === 0) {
                 let diff = Number(rangeData[index]["label"]) - 0;
-                if ((Number(data["purchased"] || 0) + Number(data["selected"])) >= rangeData[0]["label"] && (Number(data["purchased"] || 0) + Number(data["selected"])) < range["label"]) {
+                if((Number(data["purchased"] || 0) + Number(data["selected"])) >= rangeData[0]["label"] &&  (Number(data["purchased"] || 0) + Number(data["selected"])) < range["label"]) {
                     isLabelReached = true;
                     data["eligible_discount"] = range["discount"];
                 } else {
@@ -57,7 +61,7 @@ function getProgressHeaderFooterLabels(data, sourceContainer) {
                 }
                 return `<div labelvalue="${range['discount']}" class="sub-block ${(type === "FINANCIAL" || !type) ? "discount" : ""} ${(type === "FREE_GOODS" || !type) ? "freegoods" : ""} ${isLabelReached ? 'highlight' : ''}" style="width: ${backgroundProgressPerc}%;border-color: #fff; justify-content: right;"></div>`;
             }
-            if ((Number(data["purchased"] || 0) + Number(data["selected"])) >= rangeData[index - 1]["label"] && (Number(data["purchased"] || 0) + Number(data["selected"])) < range["label"]) {
+            if((Number(data["purchased"] || 0) + Number(data["selected"])) >= rangeData[index - 1]["label"] &&  (Number(data["purchased"] || 0) + Number(data["selected"])) < range["label"]) {
                 isLabelReached = true;
                 data["eligible_discount"] = range["discount"];
             } else {
@@ -75,20 +79,20 @@ function getProgressHeaderFooterLabels(data, sourceContainer) {
 
     function getOffInvoice() {
         let offInvoiceRange = data["off_invoice_range"];
-        if (data["off_invoice_range"]) {
+        if(data["off_invoice_range"]) {
             return `
                 <div class="detail_bar">
                     <div class="main">
                         ${getRange(offInvoiceRange, data["offInvoice_discount_execution"])}
                     </div>
-                    ${sourceContainer === "header" ?
-                    `
-                            ${(data["offInvoice_discount_execution"] === "FINANCIAL") ? '<div class="progress_header_label">Disc.</div>' : ''}
-                            ${(data["offInvoice_discount_execution"] === "FREE_GOODS") ? '<div class="progress_header_label" style="right: calc(100% + 4px);">Free Goods</div>' : ''}
+                    ${sourceContainer === "header" ? 
+                        `
+                            ${(data["offInvoice_discount_execution"] === "FINANCIAL") ? `<div class="progress_header_label">${locale["labels"]["discAbbr"]}.</div>` : ''}
+                            ${(data["offInvoice_discount_execution"] === "FREE_GOODS") ? `<div class="progress_header_label" style="right: calc(100% + 4px);">${locale["labels"]["freeGoods"]}</div>` : ''}
                         ` : ""
-                }
-                    ${sourceContainer === "header" ? '<div class="progress_header_label right">Off Invoice</div>' : ""}
-                    ${sourceContainer === "footer" ? '<div class="progress_footer_label">Value</div>' : ""}
+                    }
+                    ${sourceContainer === "header" ? `<div class="progress_header_label right">${locale["labels"]["offInvoice"]}</div>` : ""}
+                    ${sourceContainer === "footer" ? `<div class="progress_footer_label">${locale["labels"]["value"]}</div>` : ""}
                 </div>
             `;
         }
@@ -97,21 +101,21 @@ function getProgressHeaderFooterLabels(data, sourceContainer) {
 
     function getOnInvoice() {
         let onInvoiceRange = data["on_invoice_range"];
-        if (data["on_invoice_range"]) {
+        if(data["on_invoice_range"]) {
             return `
                 <div class="detail_bar">
                     <div class="main">
                         ${getRange(onInvoiceRange, data["onInvoice_discount_execution"])}
                     </div>
-                    ${sourceContainer === "header" ?
-                    `
-                            ${(data["onInvoice_discount_execution"] === "FINANCIAL") ? '<div class="progress_header_label">Disc.</div>' : ''}
-                            ${(data["onInvoice_discount_execution"] === "FREE_GOODS") ? '<div class="progress_header_label" style="right: calc(100% + 4px);">Free Goods</div>' : ''}
+                    ${sourceContainer === "header" ? 
+                        `
+                            ${(data["onInvoice_discount_execution"] === "FINANCIAL") ? `<div class="progress_header_label">${locale["labels"]["discAbbr"]}.</div>` : ''}
+                            ${(data["onInvoice_discount_execution"] === "FREE_GOODS") ? `<div class="progress_header_label" style="right: calc(100% + 4px);">${locale["labels"]["freeGoods"]}</div>` : ''}
                             
                         ` : ""
-                }
-                    ${sourceContainer === "header" ? '<div class="progress_header_label right">On Invoice</div>' : ""}
-                    ${sourceContainer === "footer" ? '<div class="progress_footer_label">Value</div>' : ""}
+                    }
+                    ${sourceContainer === "header" ? `<div class="progress_header_label right">${locale["labels"]["onInvoice"]}</div>` : ""}
+                    ${sourceContainer === "footer" ? `<div class="progress_footer_label">${locale["labels"]["value"]}</div>` : ""}
                 </div>
             `;
         }
@@ -150,8 +154,8 @@ function getProgressHeaderFooterLabels(data, sourceContainer) {
             <div class="main" style="justify-content: center;">
                 ${discountRangeData}
             </div>
-            ${sourceContainer === "header" ? '<div class="progress_header_label">Disc.</div>' : ""}
-            ${sourceContainer === "footer" ? '<div class="progress_footer_label">Value</div>' : ""}
+            ${sourceContainer === "header" ? `<div class="progress_header_label">${locale["labels"]["discAbbr"]}.</div>` : ""}
+            ${sourceContainer === "footer" ? `<div class="progress_footer_label">${locale["labels"]["value"]}</div>` : ""}
         </div>
     `;
 }
@@ -160,15 +164,14 @@ function getProductsProgress(item, detailed, hideAdd, basicProgress, colorscheme
     let discount_range = item["on_invoice_range"] ? item["on_invoice_range"] : item["off_invoice_range"];
     let progressPercent = Math.ceil(((item["purchased"] || 0) / item["max_limit"]) * 100);
     let progressPercentSelected = Math.ceil(((parseInt(item["purchased"] || 0) + parseInt(item["selected"])) / item["max_limit"]) * 100);
-
-
-
+    
+    
     let aggregateSelectedProgress = 0;
     let aggregateInvertedProgress = 0;
     let inverted = parseInt(item["purchased"]) || 0;
     let selected = parseInt(item["purchased"] || 0) + parseInt(item["selected"]);
-    let backgroundProgressWidth = Number(item["max_limit"]) / discount_range.length;
-    let backgroundProgressPerc = (backgroundProgressWidth / Number(item["max_limit"])) * 100;
+    let backgroundProgressWidth = Number(item["max_limit"])/discount_range.length;
+    let backgroundProgressPerc = (backgroundProgressWidth/Number(item["max_limit"])) * 100;
 
     let isLabelReached = false;
     let addBtn = `
@@ -191,47 +194,47 @@ function getProductsProgress(item, detailed, hideAdd, basicProgress, colorscheme
     `;
 
     let rangeDataDivs = discount_range.map((range, index) => {
-        if (index === 0) {
+        if(index === 0) {
             let diff = Number(discount_range[index]["label"]) - 0;
-            let blockRatio = backgroundProgressWidth / diff;
+            let blockRatio = backgroundProgressWidth/diff;
             if (selected > 0) {
-                if (selected > Number(discount_range[index]["label"])) {
+                if(selected > Number(discount_range[index]["label"])) {
                     aggregateSelectedProgress = aggregateSelectedProgress + (blockRatio * diff);
                     // aggregateInvertedProgress = aggregateInvertedProgress + (blockRatio * diff);
                 } else {
                     aggregateSelectedProgress = aggregateSelectedProgress + (blockRatio * (selected - 0));
                     // aggregateInvertedProgress = aggregateInvertedProgress + (blockRatio * (inverted - 0));
                 }
-
+                
             }
 
             if (inverted > 0) {
-                if (inverted > Number(discount_range[index]["label"])) {
+                if(inverted > Number(discount_range[index]["label"])) {
                     // aggregateSelectedProgress = aggregateSelectedProgress + (blockRatio * diff);
                     aggregateInvertedProgress = aggregateInvertedProgress + (blockRatio * diff);
                 } else {
                     // aggregateSelectedProgress = aggregateSelectedProgress + (blockRatio * (selected - 0));
                     aggregateInvertedProgress = aggregateInvertedProgress + (blockRatio * (inverted - 0));
                 }
-
+                
             }
-            if ((Number(item["purchased"] || 0) + Number(item["selected"])) < range["label"]) {
+            if((Number(item["purchased"] || 0) + Number(item["selected"])) < range["label"]) {
                 isLabelReached = true;
             } else {
                 isLabelReached = false;
             }
             return `<div class="sub-block ${isLabelReached ? "withmarkings" : "withoutmarkings"}" style="width: ${backgroundProgressPerc}%;"></div>`;
         }
-        if ((Number(item["purchased"] || 0) + Number(item["selected"])) < range["label"]) {
+        if((Number(item["purchased"] || 0) + Number(item["selected"])) < range["label"]) {
             isLabelReached = true;
         } else {
             isLabelReached = false;
         }
         if (index === discount_range.length - 1) {
             let diff = Number(discount_range[index]["label"]) - Number(discount_range[index - 1]["label"]);
-            let blockRatio = backgroundProgressWidth / diff;
+            let blockRatio = backgroundProgressWidth/diff;
             if (selected > Number(discount_range[index - 1]["label"])) {
-                if (selected >= Number(discount_range[index]["label"])) {
+                if(selected >= Number(discount_range[index]["label"])) {
                     aggregateSelectedProgress = aggregateSelectedProgress + (blockRatio * diff);
                     // aggregateInvertedProgress = aggregateInvertedProgress + (blockRatio * diff);
                 } else {
@@ -241,12 +244,12 @@ function getProductsProgress(item, detailed, hideAdd, basicProgress, colorscheme
             }
 
             if (inverted > Number(discount_range[index - 1]["label"])) {
-                if (inverted >= Number(discount_range[index]["label"])) {
+                if(inverted >= Number(discount_range[index]["label"])) {
                     // aggregateSelectedProgress = aggregateSelectedProgress + (blockRatio * diff);
                     aggregateInvertedProgress = aggregateInvertedProgress + (blockRatio * diff);
                 } else {
                     // aggregateSelectedProgress = aggregateSelectedProgress + (blockRatio * (selected - Number(discount_range[index - 1]["label"])));
-                    if (inverted > Number(discount_range[index - 1]["label"])) {
+                    if(inverted > Number(discount_range[index - 1]["label"])) {
                         aggregateInvertedProgress = aggregateInvertedProgress + (blockRatio * (inverted - Number(discount_range[index - 1]["label"])));
                     }
                 }
@@ -254,9 +257,9 @@ function getProductsProgress(item, detailed, hideAdd, basicProgress, colorscheme
             return `<div class="sub-block ${isLabelReached ? "withmarkings" : "withoutmarkings"}" style="width: ${backgroundProgressPerc}%;"></div>`;
         }
         let diff = Number(discount_range[index]["label"]) - Number(discount_range[index - 1]["label"]);
-        let blockRatio = backgroundProgressWidth / diff;
+        let blockRatio = backgroundProgressWidth/diff;
         if (selected > Number(discount_range[index - 1]["label"])) {
-            if (selected > Number(discount_range[index]["label"])) {
+            if(selected > Number(discount_range[index]["label"])) {
                 aggregateSelectedProgress = aggregateSelectedProgress + (blockRatio * diff);
                 // aggregateInvertedProgress = aggregateInvertedProgress + (blockRatio * diff);
             } else {
@@ -264,12 +267,12 @@ function getProductsProgress(item, detailed, hideAdd, basicProgress, colorscheme
                 // aggregateInvertedProgress = aggregateInvertedProgress + (blockRatio * (inverted - Number(discount_range[index - 1]["label"])));
             }
 
-            if (inverted > Number(discount_range[index]["label"])) {
+            if(inverted > Number(discount_range[index]["label"])) {
                 // aggregateSelectedProgress = aggregateSelectedProgress + (blockRatio * diff);
                 aggregateInvertedProgress = aggregateInvertedProgress + (blockRatio * diff);
             } else {
                 // aggregateSelectedProgress = aggregateSelectedProgress + (blockRatio * (selected - Number(discount_range[index - 1]["label"])));
-                if (inverted > Number(discount_range[index - 1]["label"])) {
+                if(inverted > Number(discount_range[index - 1]["label"])) {
                     aggregateInvertedProgress = aggregateInvertedProgress + (blockRatio * (inverted - Number(discount_range[index - 1]["label"])));
                 }
             }
@@ -280,8 +283,8 @@ function getProductsProgress(item, detailed, hideAdd, basicProgress, colorscheme
     // console.log("aggregate progress --> ", aggregateSelectedProgress);
     // console.log("aggregateInvertedProgress progress --> ", aggregateInvertedProgress);
     rangeDataDivs = rangeDataDivs.join("");
-    let aggregateSelectedProgressPerc = (aggregateSelectedProgress / Number(item["max_limit"])) * 100;
-    let aggregateInvertedProgressPerc = (aggregateInvertedProgress / Number(item["max_limit"])) * 100;
+    let aggregateSelectedProgressPerc = (aggregateSelectedProgress/Number(item["max_limit"])) * 100;
+    let aggregateInvertedProgressPerc = (aggregateInvertedProgress/Number(item["max_limit"])) * 100;
 
     return `
         <div class="progressbar flex">

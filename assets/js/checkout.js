@@ -1,25 +1,27 @@
 
 function loadOrderCart(data) {
+    let localStoredData = JSON.parse(localStorage.getItem("data"));
+    let locale = localStoredData["locale"];
     $("#content_box").empty();
     $("#content_box").append(`
         <div class="order_details_container choosebrands">
             <div class="menu_header">
-                <div class="label">Order Details</div>
+                <div class="label">${locale["labels"]["orderDetails"]}</div>
                 <div class="icon goToBrandLevel cursor"><img src="/gsk/assets/images/svg/plus.svg" /></div>
             </div>
             ${getAccordianAccounts(data["new_orders"]["orders"])}
             <div>
-                ${data["rebates_orders"] && data["rebates_orders"]["orders"] && data["rebates_orders"]["orders"].length !== 0 ? `<div class="menu_header"><div class="category_label">Period Eligible / Rebates</div></div>`: ""}
+                ${data["rebates_orders"] && data["rebates_orders"]["orders"] && data["rebates_orders"]["orders"].length !== 0 ? `<div class="menu_header"><div class="category_label">${locale["labels"]["rebates"]}</div></div>` : ""}
                 <div id="rebates_order">
-                    ${data["rebates_orders"] && data["rebates_orders"]["orders"] && data["rebates_orders"]["orders"].length !== 0 ? getAccordianAccounts([data["rebates_orders"]["orders"][0]], true): ""}
+                    ${data["rebates_orders"] && data["rebates_orders"]["orders"] && data["rebates_orders"]["orders"].length !== 0 ? getAccordianAccounts([data["rebates_orders"]["orders"][0]], true) : ""}
                 </div>
             </div>
         </div>
         <div class="bottom">
             <div class="btn_wrapper">
                 <div class="place_order">
-                    <button class="btn solid cancel" id="cancel">Cancel</button>
-                    <button class="btn solid confirm" id="confirm">Confirm</button>
+                    <button class="btn solid cancel" id="cancel">${locale["buttons"]["cancel"]}</button>
+                    <button class="btn solid confirm" id="confirm">${locale["buttons"]["confirm"]}</button>
                 </div>
             </div>
         </div>
@@ -136,6 +138,8 @@ function loadOrderCart(data) {
 }
 
 function getAccordianAccounts(data, rebates) {
+    let localStoredData = JSON.parse(localStorage.getItem("data"));
+    let locale = localStoredData["locale"];
     let parsedData = getParsedData();
     let newDataJoined = [];
     if (rebates) {
@@ -177,15 +181,15 @@ function getAccordianAccounts(data, rebates) {
                                     <div class="input_date_picker" readonly="readonly">${order["ordered_date"]}</div>
                                 </div>
                             </div>
-                            <div class="flex title">PRODUCTS</div>
+                            <div class="flex title">${locale["labels"]["products"]}</div>
                             <table class="accordian table">
                                 <thead>
                                     <tr class="info_row borderBottom">
-                                        <!-- <td class="info_data title" colspan="1">Est. Price</td> -->
-                                        <td class="info_data title" colspan="1">Units</td>
-                                        <td class="info_data title" colspan="1">${rebates ? "Off Invoice Discount" : "On Invoice Discount"}</td>
-                                        <td class="info_data title" colspan="1">Free Goods</td>
-                                        ${rebates ? "" : '<td class="info_data title" colspan="1">Pay Term</td>'}
+                                        <!-- <td class="info_data title" colspan="1">${locale["labels"]["estPrice"]}</td> -->
+                                        <td class="info_data title" colspan="1">${locale["labels"]["units"]}</td>
+                                        <td class="info_data title" colspan="1">${rebates ? locale["labels"]["offInvoiceDiscount"] : locale["labels"]["onInvoiceDiscount"]}</td>
+                                        <td class="info_data title" colspan="1">${locale["labels"]["freeGoods"]}</td>
+                                        ${rebates ? "" : `<td class="info_data title" colspan="1">${locale["labels"]["payTerm"]}</td>`}
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -238,11 +242,13 @@ function loadOrderFinalCart(data) {
 
     let filteredBrandData = filteredBrand[0];
 
+    let localStoredData = JSON.parse(localStorage.getItem("data"));
+    let locale = localStoredData["locale"];
     $("#content_box").empty();
     $("#content_box").append(`
         <div class="order_details_container choosebrands">
             <div class="menu_header">
-                <div class="label">Order Details</div>
+                <div class="label">${locale["labels"]["orderDetails"]}</div>
                 <div class="icon"><img src="/gsk/assets/images/svg/plus.svg" /></div>
             </div>
             ${loadProgressCards({ "brands": filteredBrand }, true, true)}
@@ -251,8 +257,8 @@ function loadOrderFinalCart(data) {
         <div class="bottom">
             <div class="btn_wrapper">
                 <div class="place_order">
-                    <button class="btn solid inverted" id="backFinalCheckout">Cancel</button>
-                    <button class="btn solid" id="continueFinalCheckout">Continue</button>
+                    <button class="btn solid inverted" id="backFinalCheckout">${locale["buttons"]["cancel"]}</button>
+                    <button class="btn solid" id="continueFinalCheckout">${locale["buttons"]["continue"]}</button>
                 </div>
             </div>
         </div>
