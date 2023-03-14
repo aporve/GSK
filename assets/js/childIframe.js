@@ -1,5 +1,7 @@
 (function addFrames() {
     try {
+        let h = window.innerHeight - 134;
+        document.getElementById("chatBoxMainContainer").style.height = `${h}px`
         window.onresize = function (event) {
             var frameHeight = window.innerHeight - 104 - 48;
             document.getElementById("chatBoxMainContainer").style.height = `${frameHeight}px`
@@ -16,7 +18,7 @@
             <div class="overflow-container-header">
                 <ul class="header-wrapper">
                   <div style="width: 100%; height:100%">
-                    <img src="https://cdn.yellowmessenger.com/kYHhFpnp4oLL1673432814444.jpg" alt="GSK Image" style="width: 100%; height:100%">
+                    <img src="https://cdn.yellowmessenger.com/7EAbPihYqpwv1678692649814.jpg" alt="GSK Image" style="width: 100%; height:100%">
                   </div>
                 </ul>
             </div>
