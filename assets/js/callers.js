@@ -14,15 +14,27 @@
     }, 500);
 })();
 
-function GlobalVarInit() {
-    window.orderCartData = [];
-    window.updateCartData = {};
-    window.cartData = {};
-    window.wholesalerAccountData = [];
-    window.dataStore = {};
-    window.discountData = {};
-    // window.currentScreen = "";
-    window.brandArr = {};
+function GlobalVarInit(data) {
+    if (data && data["appstate"]) {
+        console.log(data["appstate"]);
+        window.orderCartData = data["appstate"]["orderCartData"];
+        window.updateCartData = data["appstate"]["updateCartData"];
+        window.cartData = data["appstate"]["cartData"];
+        window.wholesalerAccountData = data["appstate"]["wholesalerAccountData"];
+        window.dataStore = {};
+        window.discountData = data["appstate"]["discountData"];
+        // window.currentScreen = "";
+        window.brandArr = data["appstate"]["brandArr"];
+    } else {
+        window.orderCartData = [];
+        window.updateCartData = {};
+        window.cartData = {};
+        window.wholesalerAccountData = [];
+        window.dataStore = {};
+        window.discountData = {};
+        // window.currentScreen = "";
+        window.brandArr = {};
+    }
 }
 
 function StoreDataIn(data) {
